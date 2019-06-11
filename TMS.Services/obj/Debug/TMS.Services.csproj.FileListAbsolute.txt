@@ -1,0 +1,11 @@
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\bin\Debug\TMS.Services.dll
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\bin\Debug\TMS.Services.pdb
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\bin\Debug\Newtonsoft.Json.dll
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\bin\Debug\System.Net.Http.Formatting.dll
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\bin\Debug\Newtonsoft.Json.xml
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\bin\Debug\System.Net.Http.Formatting.xml
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\obj\Debug\TMS.Services.csprojAssemblyReference.cache
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\obj\Debug\TMS.Services.csproj.CoreCompileInputs.cache
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\obj\Debug\TMS.Services.csproj.CopyComplete
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\obj\Debug\TMS.Services.dll
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\obj\Debug\TMS.Services.pdb
