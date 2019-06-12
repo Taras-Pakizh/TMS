@@ -7,7 +7,7 @@ using System.Web.Http;
 
 namespace TMS.Server.Controllers
 {
-    [Authorize]
+    //[Authorize(Roles = "Engineer")]
     public class ValuesController : ApiController
     {
         // GET api/values

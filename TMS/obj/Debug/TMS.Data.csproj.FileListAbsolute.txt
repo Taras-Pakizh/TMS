@@ -15,3 +15,5 @@ D:\LP\LP_6_semester\Practice\Project\TMS\TMS\obj\Debug\TMS.pdb
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS\obj\Debug\TMS.Data.Migrations.Init.resources
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS\obj\Debug\TMS.Data.csproj.GenerateResource.cache
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS\obj\Debug\TMS.Data.Migrations.Init1.resources
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS\obj\Debug\TMS.Data.Migrations.user.resources
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS\obj\Debug\TMS.Data.Migrations.report.resources

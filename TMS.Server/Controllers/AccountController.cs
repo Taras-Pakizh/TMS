@@ -17,6 +17,9 @@ using TMS.Server.Models;
 using TMS.Server.Providers;
 using TMS.Server.Results;
 
+using TMS.Data;
+using System.Linq;
+
 namespace TMS.Server.Controllers
 {
     [Authorize]
@@ -319,25 +322,83 @@ namespace TMS.Server.Controllers
         }
 
         // POST api/Account/Register
+        //[AllowAnonymous]
+        //[Route("Register")]
+        //public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+
+        //    IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+        //    if (!result.Succeeded)
+        //    {
+        //        return GetErrorResult(result);
+        //    }
+
+        //    return Ok();
+        //}
+
+        // POST api/Account/Register
         [AllowAnonymous]
         [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        public async Task<IHttpActionResult> Register(RegistrationModel model)
         {
-            if (!ModelState.IsValid)
+            var roleManager = new RoleManager<IdentityRole>(
+                    new RoleStore<IdentityRole>(new ApplicationDbContext()));
+
+            if (!ModelState.IsValid || !roleManager.RoleExists(model.Role))
             {
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser()
+            {
+                UserName = model.Login,
+                Email = model.Email
+            };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
-            if (!result.Succeeded)
+            if (result.Succeeded)
+            {
+                var role = roleManager.Roles.Where(x => x.Name == model.Role).Single();
+                UserManager.AddToRole(user.Id, role.Name);
+                using(var context = new MyContext())
+                {
+                    var newUser = context.Users.Add(new User()
+                    {
+                        firstName = model.firstName,
+                        lastName = model.lastName,
+                        email = model.Email,
+                        role = (Role)Enum.Parse(typeof(Role), model.Role),
+                        login = model.Login
+                    });
+                    if(model.team != null)
+                    {
+                        var team = context.Teams.Where(x => x.Id == model.team).Single();
+                        team.engineers.Add(newUser);
+                    }
+                    context.SaveChanges();
+                }
+            }
+            else
             {
                 return GetErrorResult(result);
             }
 
             return Ok();
+        }
+
+        [Authorize]
+        public string GetRole()
+        {
+            var role = UserManager.GetRoles(User.Identity.GetUserId()).Single();
+            return role;
         }
 
         // POST api/Account/RegisterExternal

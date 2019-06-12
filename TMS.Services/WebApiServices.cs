@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
+using TMS.Data;
+
 namespace TMS.Services
 {
     public class WebApiServices
@@ -22,10 +24,9 @@ namespace TMS.Services
         public WebApiServices(string app_path = "http://localhost:58247")
         {
             _app_path = app_path;
-
         }
 
-        // получение токена
+        //авторизація
         public bool Authorization(string username, string password)
         {
             var pairs = new List<KeyValuePair<string, string>>
@@ -56,7 +57,6 @@ namespace TMS.Services
             return true;
         }
 
-        // создаем http-клиента с токеном 
         private HttpClient CreateClient()
         {
             if (_token == null)
@@ -72,17 +72,17 @@ namespace TMS.Services
             return client;
         }
 
-        // получаем информацию о клиенте 
-        public string GetUserInfo()
+        //отримати роль користувача
+        public Role GetRole()
         {
-            using (var client = CreateClient())
+            using(var client = CreateClient())
             {
-                var response = client.GetAsync("/api/Account/UserInfo").Result;
-                return response.Content.ReadAsStringAsync().Result;
+                var responce = client.GetAsync("/api/Account").Result;
+                var roleStr = responce.Content.ReadAsAsync<string>().Result;
+                return (Role)Enum.Parse(typeof(Role), roleStr);
             }
         }
 
-        // обращаемся по маршруту api/values 
         public string GetValues()
         {
             using (var client = CreateClient())
@@ -92,22 +92,30 @@ namespace TMS.Services
             }
         }
 
-        // регистрация
-        public string Register(string email, string password)
+        
+        public string Register(string email, string password, string login, string roleName, string firstname, string lastname, int teamId)
         {
             var registerModel = new
             {
                 Email = email,
                 Password = password,
-                ConfirmPassword = password
+                ConfirmPassword = password,
+                Login = login,
+                Role = roleName,
+                firstName = firstname,
+                lastName = lastname,
+                team = teamId
             };
             using (var client = new HttpClient())
             {
+                client.BaseAddress = new Uri(_app_path + '/');
                 var response = client.PostAsJsonAsync("/api/Account/Register", registerModel).Result;
                 return response.StatusCode.ToString();
             }
         }
-        
+
+        #region CRUD
+
         public IEnumerable<T> GetAll<T>() where T : class
         {
             var service = new Service<T>(CreateClient());
@@ -137,5 +145,7 @@ namespace TMS.Services
             var service = new Service<T>(CreateClient());
             return service.Delete(id);
         }
+        
+        #endregion
     }
 }

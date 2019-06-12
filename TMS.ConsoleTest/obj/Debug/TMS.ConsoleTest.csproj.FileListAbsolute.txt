@@ -18,3 +18,6 @@ D:\LP\LP_6_semester\Practice\Project\TMS\TMS.ConsoleTest\bin\Debug\TMS.pdb
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.ConsoleTest\bin\Debug\TMS.dll.config
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.ConsoleTest\bin\Debug\EntityFramework.xml
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.ConsoleTest\bin\Debug\ru\EntityFramework.resources.dll
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.ConsoleTest\bin\Debug\EntityFramework.SqlServer.dll
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.ConsoleTest\bin\Debug\EntityFramework.SqlServer.xml
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.ConsoleTest\bin\Debug\ru\EntityFramework.SqlServer.resources.dll

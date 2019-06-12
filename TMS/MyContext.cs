@@ -8,7 +8,7 @@ using System.Data.Entity;
 
 namespace TMS.Data
 {
-    class MyContext: DbContext
+    public class MyContext: DbContext
     {
         public MyContext() : base("name=TMS") { }
 
