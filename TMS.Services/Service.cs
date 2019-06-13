@@ -4,10 +4,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using TMS.ViewModels;
 
 namespace TMS.Services
 {
-    class Service<T> where T : class
+    class Service<Tview> where Tview : IViewBase
     {
         private HttpClient _client;
         private readonly string _typeName;
@@ -15,50 +16,54 @@ namespace TMS.Services
         public Service(HttpClient client)
         {
             _client = client;
-            var type = typeof(T);
-            _typeName = type.Name;
+            var type = typeof(Tview);
+            _typeName = type.Name.Substring(0, type.Name.IndexOf("View")) + "s";
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<Tview> GetAll()
         {
             HttpResponseMessage response = _client.GetAsync("api/" + _typeName).Result;
             if (response.IsSuccessStatusCode)
             {
-                var result = response.Content.ReadAsAsync<IEnumerable<T>>().Result;
+                var result = response.Content.ReadAsAsync<IEnumerable<Tview>>().Result;
                 return result;
             }
             throw new Exception();
         }
 
-        public T Get(int id)
+        public Tview Get(int id)
         {
             HttpResponseMessage response = _client.GetAsync("api/" + _typeName + "/" + id).Result;
             if (response.IsSuccessStatusCode)
             {
-                var result = response.Content.ReadAsAsync<T>().Result;
+                var result = response.Content.ReadAsAsync<Tview>().Result;
                 return result;
             }
             throw new Exception();
         }
 
-        public bool Add(T model)
+        public bool Add(Tview model)
         {
             HttpResponseMessage response = _client.PostAsJsonAsync("api/" + _typeName, model).Result;
             if (response.IsSuccessStatusCode)
             {
-                var result = response.Content.ReadAsAsync<bool>().Result;
-                return result;
+                var result = response.Content.ReadAsStringAsync().Result;
+                if (string.IsNullOrEmpty(result))
+                    return true;
+                else return false;
             }
             throw new Exception("Add new model is fucked");
         }
 
-        public bool Update(T model)
+        public bool Update(Tview model)
         {
             HttpResponseMessage response = _client.PutAsJsonAsync("api/" + _typeName, model).Result;
             if (response.IsSuccessStatusCode)
             {
-                var result = response.Content.ReadAsAsync<bool>().Result;
-                return result;
+                var result = response.Content.ReadAsStringAsync().Result;
+                if (string.IsNullOrEmpty(result))
+                    return true;
+                else return false;
             }
             throw new Exception("Update model is fucked");
         }
@@ -68,8 +73,10 @@ namespace TMS.Services
             HttpResponseMessage response = _client.DeleteAsync("api/" + _typeName + "/" + id).Result;
             if (response.IsSuccessStatusCode)
             {
-                var result = response.Content.ReadAsAsync<bool>().Result;
-                return result;
+                var result = response.Content.ReadAsStringAsync().Result;
+                if (string.IsNullOrEmpty(result))
+                    return true;
+                else return false;
             }
             throw new Exception("Delete model is fucked");
         }

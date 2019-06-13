@@ -21,3 +21,5 @@ D:\LP\LP_6_semester\Practice\Project\TMS\TMS.ConsoleTest\bin\Debug\ru\EntityFram
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.ConsoleTest\bin\Debug\EntityFramework.SqlServer.dll
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.ConsoleTest\bin\Debug\EntityFramework.SqlServer.xml
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.ConsoleTest\bin\Debug\ru\EntityFramework.SqlServer.resources.dll
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.ConsoleTest\bin\Debug\TMS.ViewModels.dll
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.ConsoleTest\bin\Debug\TMS.ViewModels.pdb

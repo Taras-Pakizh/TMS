@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 using TMS.Data;
+using TMS.ViewModels;
 
 namespace TMS.Services
 {
@@ -82,16 +83,6 @@ namespace TMS.Services
                 return (Role)Enum.Parse(typeof(Role), roleStr);
             }
         }
-
-        public string GetValues()
-        {
-            using (var client = CreateClient())
-            {
-                var response = client.GetAsync("/api/values").Result;
-                return response.Content.ReadAsStringAsync().Result;
-            }
-        }
-
         
         public string Register(string email, string password, string login, string roleName, string firstname, string lastname, int teamId)
         {
@@ -114,35 +105,36 @@ namespace TMS.Services
             }
         }
 
+        //CRUD операції
         #region CRUD
 
-        public IEnumerable<T> GetAll<T>() where T : class
+        public IEnumerable<Tview> GetAll<Tview>() where Tview : IViewBase
         {
-            var service = new Service<T>(CreateClient());
+            var service = new Service<Tview>(CreateClient());
             return service.GetAll();
         }
 
-        public T Get<T>(int id) where T : class
+        public Tview Get<Tview>(int id) where Tview : IViewBase
         {
-            var service = new Service<T>(CreateClient());
+            var service = new Service<Tview>(CreateClient());
             return service.Get(id);
         }
 
-        public bool Add<T>(T model) where T : class
+        public bool Add<Tview>(Tview model) where Tview : IViewBase
         {
-            var service = new Service<T>(CreateClient());
+            var service = new Service<Tview>(CreateClient());
             return service.Add(model);
         }
 
-        public bool Update<T>(T model) where T : class
+        public bool Update<Tview>(Tview model) where Tview : IViewBase
         {
-            var service = new Service<T>(CreateClient());
+            var service = new Service<Tview>(CreateClient());
             return service.Update(model);
         }
 
-        public bool Delete<T>(int id) where T : class
+        public bool Delete<Tview>(int id) where Tview : IViewBase
         {
-            var service = new Service<T>(CreateClient());
+            var service = new Service<Tview>(CreateClient());
             return service.Delete(id);
         }
         

@@ -7,35 +7,37 @@ using System.Threading.Tasks;
 using System.Web.Http;
 
 using TMS.Data;
+using TMS.ViewModels;
+using AutoMapper;
+using TMS.Server.Services;
 
 namespace TMS.Server.Controllers
 {
     //[Authorize(Roles = "Engineer")]
-    public class ReportController : ApiController
+    public class ReportsController : ApiController
     {
-        private MyContext context;
-        private Service<Report> service;
-
-        public ReportController() : base()
+        private Service<Report, ReportView> service;
+        
+        public ReportsController() : base()
         {
-            context = new MyContext();
-            service = new Service<Report>();
+            service = new Service<Report, ReportView>();
+            Mapping.Initialize();
         }
 
         // GET api/Report
-        public IEnumerable<Report> Get()
+        public IEnumerable<ReportView> Get()
         {
-            return service.GetAll();
+            return Mapper.Map<IEnumerable<Report>, IEnumerable<ReportView>>(service.GetAll().ToList());
         }
 
         // GET api/Report/5
-        public Report Get(int id)
+        public ReportView Get(int id)
         {
-            return service.Get(id);
+            return Mapper.Map<Report, ReportView>(service.Get(id));
         }
 
         // POST api/Report
-        public IHttpActionResult Post([FromBody]Report model)
+        public IHttpActionResult Post([FromBody]ReportView model)
         {
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
@@ -46,8 +48,8 @@ namespace TMS.Server.Controllers
             return Ok();
         }
 
-        // PUT api/Report/5
-        public IHttpActionResult Put(int id, [FromBody]Report model)
+        // PUT api/Report
+        public IHttpActionResult Put([FromBody]ReportView model)
         {
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
 

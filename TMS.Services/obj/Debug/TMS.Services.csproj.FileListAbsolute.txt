@@ -15,3 +15,5 @@ D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\bin\Debug\TMS.pdb
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\bin\Debug\TMS.dll.config
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\bin\Debug\EntityFramework.xml
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\bin\Debug\ru\EntityFramework.resources.dll
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\bin\Debug\TMS.ViewModels.dll
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Services\bin\Debug\TMS.ViewModels.pdb

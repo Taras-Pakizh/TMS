@@ -6,38 +6,38 @@ using System.Runtime.Serialization;
 
 namespace TMS.Data
 {
-    [DataContract]
+    //[DataContract]
     public class Report
     {
-        [DataMember]
+        //[DataMember]
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [DataMember]
+        //[DataMember]
         public virtual Task task { get; set; }
 
         //[DataMember]
         public virtual User engineer { get; set; }
 
-        [DataMember]
+        //[DataMember]
         public ActivityType activity { get; set; }
 
-        [DataMember]
+        //[DataMember]
         public ReportStatus status { get; set; }
 
-        [DataMember]
+        //[DataMember]
         [DataType(DataType.DateTime)]
         public DateTime start { get; set; }
 
-        [DataMember]
+        //[DataMember]
         [DataType(DataType.DateTime)]
         public DateTime end { get; set; }
 
-        [DataMember]
+        //[DataMember]
         [MinLength(1)]
         public string description { get; set; }
 
-        [DataMember]
+        //[DataMember]
         public double effort { get; set; }
 
         //[DataMember]
