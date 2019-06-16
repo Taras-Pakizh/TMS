@@ -20,67 +20,86 @@ namespace TMS.Services
             _typeName = type.Name.Substring(0, type.Name.IndexOf("View")) + "s";
         }
 
+        private T ReadAs<T>(HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsAsync<T>().Result;
+                return result;
+            }
+            throw new Exception("Read as is fucked");
+        }
+
+        private bool ReadAsString(HttpResponseMessage response)
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                var result = response.Content.ReadAsStringAsync().Result;
+                if (string.IsNullOrEmpty(result))
+                    return true;
+                else return false;
+            }
+            throw new Exception("Read as string is fucked");
+        }
+
         public IEnumerable<Tview> GetAll()
         {
             HttpResponseMessage response = _client.GetAsync("api/" + _typeName).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                var result = response.Content.ReadAsAsync<IEnumerable<Tview>>().Result;
-                return result;
-            }
-            throw new Exception();
+            return ReadAs<IEnumerable<Tview>>(response);
+        }
+
+        public async Task<IEnumerable<Tview>> GetAllAsync()
+        {
+            HttpResponseMessage response = await _client.GetAsync("api/" + _typeName);
+            return ReadAs<IEnumerable<Tview>>(response);
         }
 
         public Tview Get(int id)
         {
             HttpResponseMessage response = _client.GetAsync("api/" + _typeName + "/" + id).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                var result = response.Content.ReadAsAsync<Tview>().Result;
-                return result;
-            }
-            throw new Exception();
+            return ReadAs<Tview>(response);
+        }
+
+        public async Task<Tview> GetAsync(int id)
+        {
+            HttpResponseMessage response = await _client.GetAsync("api/" + _typeName + "/" + id);
+            return ReadAs<Tview>(response);
         }
 
         public bool Add(Tview model)
         {
             HttpResponseMessage response = _client.PostAsJsonAsync("api/" + _typeName, model).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                var result = response.Content.ReadAsStringAsync().Result;
-                if (string.IsNullOrEmpty(result))
-                    return true;
-                else return false;
-            }
-            throw new Exception("Add new model is fucked");
+            return ReadAsString(response);
+        }
+
+        public async Task<bool> AddAsync(Tview model)
+        {
+            HttpResponseMessage response = await _client.PostAsJsonAsync("api/" + _typeName, model);
+            return ReadAsString(response);
         }
 
         public bool Update(Tview model)
         {
             HttpResponseMessage response = _client.PutAsJsonAsync("api/" + _typeName, model).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                var result = response.Content.ReadAsStringAsync().Result;
-                if (string.IsNullOrEmpty(result))
-                    return true;
-                else return false;
-            }
-            throw new Exception("Update model is fucked");
+            return ReadAsString(response);
+        }
+
+        public async Task<bool> UpdateAsync(Tview model)
+        {
+            HttpResponseMessage response = await _client.PutAsJsonAsync("api/" + _typeName, model);
+            return ReadAsString(response);
         }
 
         public bool Delete(int id)
         {
             HttpResponseMessage response = _client.DeleteAsync("api/" + _typeName + "/" + id).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                var result = response.Content.ReadAsStringAsync().Result;
-                if (string.IsNullOrEmpty(result))
-                    return true;
-                else return false;
-            }
-            throw new Exception("Delete model is fucked");
+            return ReadAsString(response);
         }
 
-        
+        public  async Task<bool> DeleteAsync(int id)
+        {
+            HttpResponseMessage response = await _client.DeleteAsync("api/" + _typeName + "/" + id);
+            return ReadAsString(response);
+        }
     }
 }

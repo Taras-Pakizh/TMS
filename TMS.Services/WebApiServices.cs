@@ -84,6 +84,16 @@ namespace TMS.Services
             }
         }
         
+        public async Task<Role> GetRoleAsync()
+        {
+            using (var client = CreateClient())
+            {
+                var responce = await client.GetAsync("/api/Account");
+                var roleStr = responce.Content.ReadAsAsync<string>().Result;
+                return (Role)Enum.Parse(typeof(Role), roleStr);
+            }
+        }
+
         public string Register(string email, string password, string login, string roleName, string firstname, string lastname, int teamId)
         {
             var registerModel = new
@@ -114,10 +124,22 @@ namespace TMS.Services
             return service.GetAll();
         }
 
+        public async Task<IEnumerable<Tview>> GetAllAsync<Tview>() where Tview : IViewBase
+        {
+            var service = new Service<Tview>(CreateClient());
+            return await service.GetAllAsync();
+        }
+
         public Tview Get<Tview>(int id) where Tview : IViewBase
         {
             var service = new Service<Tview>(CreateClient());
             return service.Get(id);
+        }
+
+        public async Task<Tview> GetAsync<Tview>(int id) where Tview : IViewBase
+        {
+            var service = new Service<Tview>(CreateClient());
+            return await service.GetAsync(id);
         }
 
         public bool Add<Tview>(Tview model) where Tview : IViewBase
@@ -126,10 +148,22 @@ namespace TMS.Services
             return service.Add(model);
         }
 
+        public async Task<bool> AddAsync<Tview>(Tview model) where Tview : IViewBase
+        {
+            var service = new Service<Tview>(CreateClient());
+            return await service.AddAsync(model);
+        }
+
         public bool Update<Tview>(Tview model) where Tview : IViewBase
         {
             var service = new Service<Tview>(CreateClient());
             return service.Update(model);
+        }
+
+        public async Task<bool> UpdateAsync<Tview>(Tview model) where Tview : IViewBase
+        {
+            var service = new Service<Tview>(CreateClient());
+            return await service.UpdateAsync(model);
         }
 
         public bool Delete<Tview>(int id) where Tview : IViewBase
@@ -137,7 +171,13 @@ namespace TMS.Services
             var service = new Service<Tview>(CreateClient());
             return service.Delete(id);
         }
-        
+
+        public async Task<bool> DeleteAsync<Tview>(int id) where Tview : IViewBase
+        {
+            var service = new Service<Tview>(CreateClient());
+            return await service.DeleteAsync(id);
+        }
+
         #endregion
     }
 }

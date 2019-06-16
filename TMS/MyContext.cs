@@ -10,6 +10,11 @@ namespace TMS.Data
 {
     public class MyContext: DbContext
     {
+        static MyContext()
+        {
+            Database.SetInitializer<MyContext>(new Inizializator());
+        }
+
         public MyContext() : base("name=TMS") { }
 
         public virtual DbSet<Approve> Approves { get; set; }
