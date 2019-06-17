@@ -1,5 +1,4 @@
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\TMS.Client.csprojAssemblyReference.cache
-D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\MainWindow.g.cs
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\App.g.cs
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\TMS.Client_MarkupCompile.cache
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\TMS.Client_MarkupCompile.lref
@@ -20,7 +19,6 @@ D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\bin\Debug\System.Net.Http.Fo
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\bin\Debug\Newtonsoft.Json.xml
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\bin\Debug\EntityFramework.xml
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\bin\Debug\ru\EntityFramework.resources.dll
-D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\MainWindow.baml
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\TMS.Client.g.resources
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\TMS.Client.Properties.Resources.resources
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\TMS.Client.csproj.GenerateResource.cache
@@ -28,3 +26,9 @@ D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\TMS.Client.csproj.
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\TMS.Client.csproj.CopyComplete
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\TMS.Client.exe
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\TMS.Client.pdb
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\AuthorizationWindow.g.cs
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\EngineerWindow.g.cs
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\MainWindow.g.cs
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\AuthorizationWindow.baml
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\EngineerWindow.baml
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\MainWindow.baml

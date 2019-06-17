@@ -17,15 +17,13 @@ using TMS.ViewModels;
 using TMS.Data;
 using TMS.Client.ViewModels;
 
-namespace TMS.Client
+namespace TMS.Client.Windows
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static WebApiServices client = new WebApiServices();
-
         public MainWindow()
         {
             InitializeComponent();

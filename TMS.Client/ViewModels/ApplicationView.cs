@@ -82,6 +82,18 @@ namespace TMS.Client.ViewModels
             }
         }
 
+        private Command _authorization;
+        public ICommand Authorization
+        {
+            get
+            {
+                if (_authorization != null)
+                    return _authorization;
+                _authorization = new Command(_Authorization_Exec);
+                return _authorization;
+            }
+        }
+
         #endregion
         
         #region Executes
@@ -90,15 +102,15 @@ namespace TMS.Client.ViewModels
         /// 
         /// </summary>
         /// <param name="obj"> AuthorizationModel </param>
-        private void _Authorization_Exec(object obj)
+        private async void _Authorization_Exec(object obj)
         {
-            var model = obj as AuthorizationModel;
-            if (model == null)
-                throw new Exception("Authorization model is null");
+            IsAuthorized = false;
 
-            if(!_client.Authorization(model.username, model.password))
+            var model = obj as AuthorizationModel;
+            if(_client.Authorization(model.username, model.password))
             {
-                throw new Exception("Authorization is FALSE");
+                IsAuthorized = true;
+                Role = await _client.GetRoleAsync();
             }
         }
         
@@ -108,8 +120,6 @@ namespace TMS.Client.ViewModels
         /// <param name="obj"> CRUDModel instance </param>
         private async void _CRUD_Exec(object obj)
         {
-            _Authorization_Exec(new AuthorizationModel() { username = "Pakizh_engineer", password = "Taras20." });
-
             var instance = (CRUDModel)obj;
             var funcName = "";
             switch (instance.operation)
@@ -162,5 +172,10 @@ namespace TMS.Client.ViewModels
         }
 
         #endregion
+
+        public class AuthorizationException : Exception
+        {
+            public AuthorizationException(string message) : base(message) { }
+        }
     }
 }
