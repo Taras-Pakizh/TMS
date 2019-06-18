@@ -12,7 +12,7 @@ using TMS.ViewModels;
 
 namespace TMS.Services
 {
-    public class WebApiServices
+    public class WebApiServices:IClient
     {
         private readonly string _app_path;
         private string _token;

@@ -16,9 +16,11 @@ namespace TMS.Client.ViewModels
 {
     class ApplicationView:BaseView
     {
-        private WebApiServices _client = new WebApiServices();
+        private ProxyWebApi _client = new ProxyWebApi();
 
         public ApplicationView() { }
+
+        public ProxyWebApi Proxy { get { return _client; } }
 
         #region Properties
 
@@ -63,6 +65,28 @@ namespace TMS.Client.ViewModels
             {
                 _Reports = value;
                 OnPropertyChanged(nameof(Reports));
+            }
+        }
+
+        private ObservableCollection<ProjectView> _Projects;
+        public ObservableCollection<ProjectView> Projects
+        {
+            get { return _Projects; }
+            set
+            {
+                _Projects = value;
+                OnPropertyChanged(nameof(Projects));
+            }
+        }
+
+        private ObservableCollection<TaskView> _Tasks;
+        public ObservableCollection<TaskView> Tasks
+        {
+            get { return _Tasks; }
+            set
+            {
+                _Tasks = value;
+                OnPropertyChanged(nameof(Tasks));
             }
         }
 
@@ -120,6 +144,7 @@ namespace TMS.Client.ViewModels
         /// <param name="obj"> CRUDModel instance </param>
         private async void _CRUD_Exec(object obj)
         {
+            OperationResult = false;
             var instance = (CRUDModel)obj;
             var funcName = "";
             switch (instance.operation)
@@ -151,6 +176,7 @@ namespace TMS.Client.ViewModels
             var type = typeof(T);
             var property = this.GetType().GetProperty(type.Name.Substring(0, type.Name.IndexOf("View")) + "s");
             property.SetValue(this, collection);
+            OperationResult = true;
         }
 
         private async Task _Add_Func<T>(T view) where T : IViewBase
@@ -172,10 +198,5 @@ namespace TMS.Client.ViewModels
         }
 
         #endregion
-
-        public class AuthorizationException : Exception
-        {
-            public AuthorizationException(string message) : base(message) { }
-        }
     }
 }

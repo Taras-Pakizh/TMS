@@ -6,7 +6,71 @@
         xmlns:local="clr-namespace:TMS.Client.Windows"
         mc:Ignorable="d"
         Title="EngineerWindow" Height="450" Width="800">
-    <Grid>
+    <TabControl Loaded="TabControl_Loaded">
         
-    </Grid>
+        <TabItem IsSelected="True">
+            <TabItem.Header>
+                <StackPanel>
+                    <TextBlock Text="My reports"/>
+                </StackPanel>
+            </TabItem.Header>
+            <TabItem.Content>
+                <StackPanel>
+                    <DataGrid ItemsSource="{Binding Path=Reports, Mode=OneWay}" IsReadOnly="True">
+
+                    </DataGrid>
+                    <Button Content="Test" Click="Test_Click"/>
+                </StackPanel>
+            </TabItem.Content>
+        </TabItem>
+
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel>
+                    <TextBlock Text="Create report"/>
+                </StackPanel>
+            </TabItem.Header>
+            <TabItem.Content>
+                <StackPanel>
+                    <DataGrid ItemsSource="{Binding Path=Reports, Mode=OneWay}" IsReadOnly="True">
+
+                    </DataGrid>
+
+                </StackPanel>
+            </TabItem.Content>
+        </TabItem>
+
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel>
+                    <TextBlock Text="Projects"/>
+                </StackPanel>
+            </TabItem.Header>
+            <TabItem.Content>
+                <StackPanel>
+                    <DataGrid ItemsSource="{Binding Path=Projects, Mode=OneWay}" IsReadOnly="True">
+
+                    </DataGrid>
+
+                </StackPanel>
+            </TabItem.Content>
+        </TabItem>
+
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel>
+                    <TextBlock Text="Tasks"/>
+                </StackPanel>
+            </TabItem.Header>
+            <TabItem.Content>
+                <StackPanel>
+                    <DataGrid ItemsSource="{Binding Path=Tasks, Mode=OneWay}" IsReadOnly="True">
+
+                    </DataGrid>
+
+                </StackPanel>
+            </TabItem.Content>
+        </TabItem>
+
+    </TabControl>
 </Window>

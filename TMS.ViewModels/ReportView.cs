@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +11,9 @@ namespace TMS.ViewModels
 {
     public class ReportView:IViewBase
     {
+        
         public int Id { get; set; }
+        
         
         public int taskId { get; set; }
         
@@ -29,7 +33,7 @@ namespace TMS.ViewModels
         //[DataMember]
         public double effort { get; set; }
 
-        //[DataMember]
+        
         public ICollection<int> approveIds { get; set; }
 
         public int GetId()

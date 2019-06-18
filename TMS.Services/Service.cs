@@ -27,7 +27,7 @@ namespace TMS.Services
                 var result = response.Content.ReadAsAsync<T>().Result;
                 return result;
             }
-            throw new Exception("Read as is fucked");
+            throw new Exception("Read as is fucked " + typeof(T) + " = " + response.StatusCode);
         }
 
         private bool ReadAsString(HttpResponseMessage response)
