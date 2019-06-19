@@ -24,17 +24,6 @@ namespace TMS.Client.ViewModels
 
         #region Properties
 
-        private bool _OperationResult;
-        public bool OperationResult
-        {
-            get { return _OperationResult; }
-            set
-            {
-                _OperationResult = value;
-                OnPropertyChanged(nameof(OperationResult));
-            }
-        }
-
         private bool _IsAuthorized;
         public bool IsAuthorized
         {
@@ -54,6 +43,17 @@ namespace TMS.Client.ViewModels
             {
                 _role = value;
                 OnPropertyChanged(nameof(Role));
+            }
+        }
+
+        private UserView _currentUser;
+        public UserView CurrentUser
+        {
+            get { return _currentUser; }
+            set
+            {
+                _currentUser = value;
+                OnPropertyChanged(nameof(CurrentUser));
             }
         }
 
@@ -92,111 +92,51 @@ namespace TMS.Client.ViewModels
 
         #endregion
 
-        #region Commands
+        #region Psevdo_Commands
 
-        private Command _CRUD;
-        public ICommand CRUD
+        public async Task<bool> GetAll<T>() where T : IViewBase
         {
-            get
+            try
             {
-                if (_CRUD != null)
-                    return _CRUD;
-                _CRUD = new Command(_CRUD_Exec);
-                return _CRUD;
+                var collection = new ObservableCollection<T>(await _client.GetAllAsync<T>());
+                var type = typeof(T);
+                var property = this.GetType().GetProperty(type.Name.Substring(0, type.Name.IndexOf("View")) + "s");
+                property.SetValue(this, collection);
             }
+            catch(Exception e)
+            {
+                return false;
+            }
+            return true;
         }
 
-        private Command _authorization;
-        public ICommand Authorization
+        public async Task<bool> Add<T>(T view) where T : IViewBase
         {
-            get
-            {
-                if (_authorization != null)
-                    return _authorization;
-                _authorization = new Command(_Authorization_Exec);
-                return _authorization;
-            }
+            return await _client.AddAsync(view);
         }
 
-        #endregion
-        
-        #region Executes
+        public async Task<bool> Update<T>(T view) where T : IViewBase
+        {
+            return await _client.UpdateAsync(view);
+        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="obj"> AuthorizationModel </param>
-        private async void _Authorization_Exec(object obj)
+        public async Task<bool> Delete<T>(int id) where T : IViewBase
+        {
+            return await _client.DeleteAsync<T>(id);
+        }
+
+        public async Task Authorization(AuthorizationModel model)
         {
             IsAuthorized = false;
-
-            var model = obj as AuthorizationModel;
-            if(_client.Authorization(model.username, model.password))
+            if (_client.Authorization(model.username, model.password))
             {
                 IsAuthorized = true;
                 Role = await _client.GetRoleAsync();
+                CurrentUser = await _client.GetCurrentUser(model.username);
             }
         }
+
+        #endregion
         
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="obj"> CRUDModel instance </param>
-        private async void _CRUD_Exec(object obj)
-        {
-            OperationResult = false;
-            var instance = (CRUDModel)obj;
-            var funcName = "";
-            switch (instance.operation)
-            {
-                case Operation.Post: funcName = nameof(_Add_Func); break;
-                case Operation.Put: funcName = nameof(_Update_Func); break;
-                case Operation.Delete: funcName = nameof(_Delete_Func); break;
-                case Operation.Get: funcName = nameof(_GetAll_Func); break;
-            }
-            var generic = GetGenericMethod(funcName, instance.type);
-            var task = (Task)generic.Invoke(this, new object[] { instance.model });
-            await task;
-        }
-
-        #endregion
-
-        #region Service
-
-        private MethodInfo GetGenericMethod(string name, Type type)
-        {
-            var method = typeof(ApplicationView).GetRuntimeMethods().Where(x => x.Name == name).Single();
-            return method.MakeGenericMethod(type);
-        }
-
-        private async Task _GetAll_Func<T>(object obj) where T : IViewBase
-        {
-            var list = await _client.GetAllAsync<T>();
-            var collection = new ObservableCollection<T>(list);
-            var type = typeof(T);
-            var property = this.GetType().GetProperty(type.Name.Substring(0, type.Name.IndexOf("View")) + "s");
-            property.SetValue(this, collection);
-            OperationResult = true;
-        }
-
-        private async Task _Add_Func<T>(T view) where T : IViewBase
-        {
-            var result = await _client.AddAsync(view);
-            OperationResult = result;
-        }
-
-        private async Task _Update_Func<T>(T view) where T : IViewBase
-        {
-            var result = await _client.UpdateAsync(view);
-            OperationResult = result;
-        }
-
-        private async Task _Delete_Func<T>(T view) where T : IViewBase
-        {
-            var result = await _client.DeleteAsync<T>(view.GetId());
-            OperationResult = result;
-        }
-
-        #endregion
     }
 }

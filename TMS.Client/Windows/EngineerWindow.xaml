@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TMS.Client.Windows"
         mc:Ignorable="d"
-        Title="EngineerWindow" Height="450" Width="800">
-    <TabControl Loaded="TabControl_Loaded">
+        Title="EngineerWindow" Height="450" Width="800" Loaded="Window_Loaded">
+    <TabControl>
         
         <TabItem IsSelected="True">
             <TabItem.Header>
@@ -19,7 +19,7 @@
                     <DataGrid ItemsSource="{Binding Path=Reports, Mode=OneWay}" IsReadOnly="True">
 
                     </DataGrid>
-                    <Button Content="Test" Click="Test_Click"/>
+                    
                 </StackPanel>
             </TabItem.Content>
         </TabItem>

@@ -28,10 +28,8 @@ D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\TMS.Client.exe
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\TMS.Client.pdb
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\AuthorizationWindow.g.cs
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\EngineerWindow.g.cs
-D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\MainWindow.g.cs
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\AuthorizationWindow.baml
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\EngineerWindow.baml
-D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\MainWindow.baml
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\bin\Debug\AutoMapper.dll
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\bin\Debug\AutoMapper.pdb
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\bin\Debug\AutoMapper.xml

@@ -33,6 +33,7 @@ namespace TMS.Client.ViewModels
         public double effort { get; set; }
 
 
+
         [Display(AutoGenerateField = false)]
         public int Id { get; set; }
 

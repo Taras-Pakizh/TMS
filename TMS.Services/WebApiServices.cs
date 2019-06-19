@@ -94,6 +94,20 @@ namespace TMS.Services
             }
         }
 
+        public async Task<UserView> GetCurrentUser(string login)
+        {
+            using(var client = CreateClient())
+            {
+                var responce = await client.PostAsJsonAsync("api/Users", login);
+ 
+                if (responce.IsSuccessStatusCode)
+                {
+                    return await responce.Content.ReadAsAsync<UserView>();
+                }
+                throw new Exception("Cant get current user");
+            }
+        }
+
         public string Register(string email, string password, string login, string roleName, string firstname, string lastname, int teamId)
         {
             var registerModel = new

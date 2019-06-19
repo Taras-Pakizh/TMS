@@ -15,6 +15,9 @@ using TMS.Client.ViewModels;
 using TMS.ViewModels;
 using TMS.Client;
 using System.Threading;
+using TMS.Services;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace TMS.Client.Windows
 {
@@ -32,30 +35,12 @@ namespace TMS.Client.Windows
         {
             InitializeComponent();
         }
-
-        private void Test_Click(object sender, RoutedEventArgs e)
-        {
-            Context.CRUD.Execute(new CRUDModel()
-            {
-                operation = Operation.Get,
-                type = typeof(ReportView)
-            });
-        }
-
-        private void TabControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            Context.CRUD.Execute(new CRUDModel()
-            {
-                operation = Operation.Get,
-                type = typeof(ReportView)
-            });
-            Thread.Sleep(5000);
-            Context.CRUD.Execute(new CRUDModel()
-            {
-                operation = Operation.Get,
-                type = typeof(TaskView)
-            });
-        }
         
+        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            await Context.GetAll<ReportView>();
+            await Context.GetAll<TaskView>();
+            await Context.GetAll<ProjectView>();
+        }
     }
 }

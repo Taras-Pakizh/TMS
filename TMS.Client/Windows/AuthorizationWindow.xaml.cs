@@ -28,12 +28,12 @@ namespace TMS.Client.Windows
             InitializeComponent();
         }
 
-        private void Login_Click(object sender, RoutedEventArgs e)
+        private async void Login_Click(object sender, RoutedEventArgs e)
         {
             var model = new AuthorizationModel()
             {
                 username = Login.Text,
-                password = Password.Text
+                password = Password.Password
             };
 
             if (!validator.IsModelValid(model))
@@ -42,7 +42,7 @@ namespace TMS.Client.Windows
                 return;
             }
 
-            Context.Authorization.Execute(model);
+            await Context.Authorization(model);
 
             if (Context.IsAuthorized)
             {

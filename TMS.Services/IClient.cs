@@ -18,6 +18,8 @@ namespace TMS.Services
 
         Task<Role> GetRoleAsync();
 
+        Task<UserView> GetCurrentUser(string login);
+
         string Register(string email, string password, string login, string roleName, string firstname, string lastname, int teamId);
         
         #region CRUD

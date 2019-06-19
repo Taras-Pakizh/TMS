@@ -19,6 +19,8 @@ namespace TMS.Client.ViewModels
         [DisplayName("Name")]
         public string taskName { get; set; }
 
+
+
         [Display(AutoGenerateField = false)]
         public int Id { get; set; }
 

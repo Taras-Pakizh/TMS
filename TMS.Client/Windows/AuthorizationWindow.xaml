@@ -13,8 +13,8 @@
         
         <TextBox Name="Login" Text="Pakizh_engineer"/>
 
-        <TextBox Name="Password" Text="Taras20."/>
-        
+        <PasswordBox Name="Password" Password="Taras20."/>
+
         <Button Content="Login" Click="Login_Click"/>
     </StackPanel>
 </Window>

@@ -21,11 +21,14 @@ namespace TMS.ConsoleTest
 
         static void Main(string[] args)
         {
-            var item = (ReportView) Activator.CreateInstance("TMS.ViewModels", "TMS.ViewModels.ReportView").Unwrap();
+            services.Authorization("Pakizh_engineer", "Taras20.");
 
-            //item.Unwrap();
+            var reports = services.GetAllAsync<ReportView>().Result;
 
-            var h = Activator.CreateInstance(typeof(ReportView));
+            var tasks = services.GetAllAsync<TaskView>().Result;
+
+            Console.WriteLine(reports.Count().ToString() + " " + tasks.Count().ToString());
+
             Console.Read();
         }   
     }

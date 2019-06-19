@@ -29,6 +29,11 @@ namespace TMS.Server.Services
             return set;
         }
 
+        public async Task<IEnumerable<T>> GetAllAsync()
+        {
+            return await set.ToListAsync();
+        }
+
         public T Get(int id)
         {
             return set.Find(id);

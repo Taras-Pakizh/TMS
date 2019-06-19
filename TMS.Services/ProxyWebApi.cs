@@ -14,9 +14,15 @@ namespace TMS.Services
 
         private WebApiServices _client;
 
-        private List<IEnumerable<IViewBase>> _LoadedData = new List<IEnumerable<IViewBase>>();
+        private Dictionary<Type, IEnumerable<IViewBase>> _LoadedData = new Dictionary<Type, IEnumerable<IViewBase>>();
 
         private Dictionary<Type, bool> _isActual_list = new Dictionary<Type, bool>();
+
+        private UserView _currentUser;
+
+        private bool _isUserActual { get; set; }
+
+
 
         public ProxyWebApi()
         {
@@ -30,13 +36,19 @@ namespace TMS.Services
 
         private void _AddSet<T>(IEnumerable<T> list) where T : IViewBase
         {
-            if(_LoadedData.Exists(x=>x.GetType() == list.GetType()))
+            if(_LoadedData.Keys.Contains(typeof(T)))
             {
-                var prevList = _LoadedData.Where(x => x.GetType() == list.GetType()).Single();
-                _LoadedData.Remove(prevList);
+                _LoadedData[typeof(T)] = (IEnumerable<IViewBase>) list;
+                _isActual_list[typeof(T)] = true;
+                return;
             }
-            _LoadedData.Add((IEnumerable<IViewBase>)list);
+            _LoadedData.Add(typeof(T), (IEnumerable<IViewBase>)list);
             _isActual_list.Add(typeof(T), true);
+        }
+
+        private IEnumerable<T> _GetLoadedData<T>()
+        {
+            return (IEnumerable<T>)_LoadedData[typeof(T)];
         }
 
         private bool _IsActual(Type type)
@@ -79,6 +91,7 @@ namespace TMS.Services
 
         public bool Authorization(string username, string password)
         {
+            _isUserActual = false;
             return _client.Authorization(username, password);
         }
 
@@ -101,6 +114,10 @@ namespace TMS.Services
 
         public IEnumerable<Tview> GetAll<Tview>() where Tview : IViewBase
         {
+            if (_IsActual(typeof(Tview)))
+            {
+                return _GetLoadedData<Tview>();
+            }
             var result = _client.GetAll<Tview>();
             _AddSet(result);
             return result;
@@ -108,6 +125,10 @@ namespace TMS.Services
 
         public async Task<IEnumerable<Tview>> GetAllAsync<Tview>() where Tview : IViewBase
         {
+            if (_IsActual(typeof(Tview)))
+            {
+                return _GetLoadedData<Tview>();
+            }
             var result = await _client.GetAllAsync<Tview>();
             _AddSet(result);
             return result;
@@ -143,6 +164,17 @@ namespace TMS.Services
         {
             _UpdateSet(typeof(Tview), false);
             return await _client.UpdateAsync(model);
+        }
+
+        public async Task<UserView> GetCurrentUser(string login)
+        {
+            if (_isUserActual)
+            {
+                return _currentUser;
+            }
+            _currentUser = await _client.GetCurrentUser(login);
+            _isUserActual = true;
+            return _currentUser;
         }
 
         #endregion

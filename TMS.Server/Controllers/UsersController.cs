@@ -28,10 +28,16 @@ namespace TMS.Server.Controllers
             return Mapper.Map<IEnumerable<User>, IEnumerable<UserView>>(service.GetAll().ToList());
         }
 
-        // GET api/Report/5
+        //// GET api/Report/5
         public UserView Get(int id)
         {
             return Mapper.Map<User, UserView>(service.Get(id));
+        }
+
+        // GET api/Report/5
+        public UserView Post([FromBody]string login)
+        {
+            return Mapper.Map<User, UserView>(service.GetAll().Where(x => x.login == login).Single());
         }
     }
 }

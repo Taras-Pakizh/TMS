@@ -9,6 +9,8 @@ using TMS.Data;
 using TMS.ViewModels;
 using AutoMapper;
 using TMS.Server.Services;
+using System.Threading.Tasks;
+using Task = TMS.Data.Task;
 
 namespace TMS.Server.Controllers
 {
@@ -23,9 +25,19 @@ namespace TMS.Server.Controllers
         }
 
         // GET api/Report
-        public IEnumerable<TaskView> Get()
+        public async Task<IEnumerable<TaskView>> Get()
         {
-            return Mapper.Map<IEnumerable<Task>, IEnumerable<TaskView>>(service.GetAll().ToList());
+            return Mapper.Map<IEnumerable<Task>, IEnumerable<TaskView>>(await service.GetAllAsync());
+            //return await System.Threading.Tasks.Task.Run(() =>
+            //{
+            //    return new List<TaskView>()
+            //    {
+            //        new TaskView()
+            //        {
+            //            effort = 100
+            //        }
+            //    };
+            //});
         }
 
         // GET api/Report/5
