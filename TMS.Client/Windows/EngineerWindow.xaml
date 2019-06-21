@@ -4,11 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TMS.Client.Windows"
-        xmlns:cc="clr-namespace:System.ComponentModel.DataAnnotations;assembly=System.ComponentModel.DataAnnotations"
-        xmlns:ccc="clr-namespace:System.ComponentModel.DataAnnotations.Schema;assembly=System.ComponentModel.DataAnnotations"
         mc:Ignorable="d"
         Title="EngineerWindow" Height="450" Width="800" Loaded="Window_Loaded">
-    <TabControl>
+    <Window.Resources>
+        
+    </Window.Resources>
+    <TabControl Name="TabControl_Global">
 
         <TabItem IsSelected="True">
             <TabItem.Header>
@@ -21,29 +22,23 @@
 
                     <DataGrid ItemsSource="{Binding Path=ViewReports, Mode=OneWay}"
                               IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
+                        
                         <DataGrid.Columns>
+                            
                             <DataGridTemplateColumn>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="Open task"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="Open task" Click="OpenTask_Click"/>
+                                            <Button Content="Update" Click="Update_Click"/>
+                                            <Button Content="Delete" Click="Delete_Click"/>
+                                        </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTemplateColumn>
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="Update"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            <DataGridTemplateColumn>
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="Delete"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
+                            
                         </DataGrid.Columns>
+                        
                     </DataGrid>
 
                 </StackPanel>
@@ -60,6 +55,20 @@
                 <StackPanel>
                     <DataGrid ItemsSource="{Binding Path=ViewProjects, Mode=OneWay}" IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
 
+                        <DataGrid.Columns>
+
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="View tasks" Click="ViewTasks_Click"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+
                     </DataGrid>
 
                 </StackPanel>
@@ -74,7 +83,34 @@
             </TabItem.Header>
             <TabItem.Content>
                 <StackPanel>
-                    <DataGrid ItemsSource="{Binding Path=ViewTasks, Mode=OneWay}" IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
+                    
+                    <StackPanel Orientation="Horizontal">
+
+                        <ComboBox Name="Filter_Project" ItemsSource="{Binding Path=ViewProjects, Mode=OneWay}" 
+                                  DisplayMemberPath="name" SelectedValuePath="Id">
+                            
+                        </ComboBox>
+
+                        <Button Content="Show" Command="{Binding Path=FilterTask}" CommandParameter="{Binding ElementName=Filter_Project, Path=SelectedItem}"/>
+                        <Button Content="Show All" Command="{Binding Path=FilterTask}"/>
+                    </StackPanel>
+
+                    <DataGrid ItemsSource="{Binding Path=ShowingTasks, Mode=OneWay}" IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
+
+                        <DataGrid.Columns>
+
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="Open task" Click="OpenTask_Click"/>
+                                            <Button Content="View reports" Click="ViewReports_Click"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
 
                     </DataGrid>
 

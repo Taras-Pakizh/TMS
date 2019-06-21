@@ -7,15 +7,15 @@ using TMS.Client.Attributes;
 
 namespace TMS.Client.ViewModels
 {
-    class ViewTask
+    public class ViewTask
     {
-        [AutoGenerate(true, "Hours")]
+        [AutoGenerate(true, "Hours", 0)]
         public double effort { get; set; }
 
-        [AutoGenerate(true, "Project")]
+        [AutoGenerate(true, "Project", 1)]
         public string projectName { get; set; }
 
-        [AutoGenerate(true, "Description")]
+        [AutoGenerate(true, "Description", 2)]
         public string taskName { get; set; }
 
 

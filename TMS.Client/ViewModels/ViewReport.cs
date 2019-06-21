@@ -10,22 +10,22 @@ namespace TMS.Client.ViewModels
 {
     class ViewReport
     {
-        [AutoGenerate(true, "Task")]
+        [AutoGenerate(true, "Task", 0)]
         public string taskName { get; set; }
 
-        [AutoGenerate(true, "Activity")]
+        [AutoGenerate(true, "Activity", 1)]
         public ActivityType activity { get; set; }
 
-        [AutoGenerate(true, "Status")]
+        [AutoGenerate(true, "Status", 2)]
         public ReportStatus status { get; set; }
 
-        [AutoGenerate(true, "Begin date")]
+        [AutoGenerate(true, "Begin date", 3)]
         public DateTime start { get; set; }
 
-        [AutoGenerate(true, "End date")]
+        [AutoGenerate(true, "End date", 4)]
         public DateTime end { get; set; }
 
-        [AutoGenerate(true, "Hours")]
+        [AutoGenerate(true, "Hours", 5)]
         public double effort { get; set; }
 
 

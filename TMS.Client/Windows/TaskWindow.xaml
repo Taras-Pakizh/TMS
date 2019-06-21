@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TMS.Client.Windows"
         mc:Ignorable="d"
-        Title="TaskWindow" Height="450" Width="800">
+        Title="TaskWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
         
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Label Name="Label_Project" Grid.Column="0" Grid.Row="0"/>
+        <Label Name="Label_Effort" Grid.Column="1" Grid.Row="0"/>
+
+        <TextBlock Name="TextBlock_Description" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"/>
+
     </Grid>
 </Window>

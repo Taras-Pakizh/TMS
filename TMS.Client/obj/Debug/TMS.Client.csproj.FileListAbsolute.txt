@@ -37,3 +37,4 @@ D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\ReportWind
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\TaskWindow.g.cs
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\ReportWindow.baml
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\TaskWindow.baml
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\GeneratedInternalTypeHelper.g.cs

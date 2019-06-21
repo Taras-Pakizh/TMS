@@ -62,10 +62,55 @@ namespace TMS.Client.Windows
                 {
                     e.Column.Visibility = Visibility.Visible;
                     e.Column.Header = attribute.Header;
+                    e.Column.DisplayIndex = attribute.Index;
                 }
-                else e.Column.Visibility = Visibility.Hidden;
+                else
+                {
+                    e.Column.Visibility = Visibility.Hidden;
+                }
             }
         }
-        
+
+        private void OpenTask_Click(object sender, RoutedEventArgs e)
+        {
+            var report = ((Button)sender).DataContext as ViewReport;
+            var task = ((Button)sender).DataContext as ViewTask;
+
+            ViewTask view;
+            if (report != null) view = Context.ViewTasks.Where(x => x.Id == report.taskId).Single();
+            else if (task != null) view = task;
+            else return;
+
+            var window = new TaskWindow(view);
+            window.Show();
+        }
+
+        private void Update_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Add_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ViewReports_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void ViewTasks_Click(object sender, RoutedEventArgs e)
+        {
+            var view = ((Button)sender).DataContext as ViewProject;
+            Filter_Project.SelectedItem = view;
+            Context.FilterTask.Execute(view);
+            TabControl_Global.SelectedIndex = 2;
+        }
     }
 }

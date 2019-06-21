@@ -127,6 +127,17 @@ namespace TMS.Client.ViewModels
             }
         }
 
+        private ObservableCollection<ViewTask> _ShowingTasks;
+        public ObservableCollection<ViewTask> ShowingTasks
+        {
+            get { return _ShowingTasks; }
+            set
+            {
+                _ShowingTasks = value;
+                OnPropertyChanged(nameof(ShowingTasks));
+            }
+        }
+
         #endregion
 
         #region Psevdo_Commands
@@ -187,10 +198,44 @@ namespace TMS.Client.ViewModels
                 ViewReports = new ObservableCollection<ViewReport>(viewReports);
                 ViewTasks = new ObservableCollection<ViewTask>(viewTasks);
                 ViewProjects = new ObservableCollection<ViewProject>(viewProjects);
+
+                ShowingTasks = ViewTasks;
             });
         }
 
         #endregion
-        
+
+
+
+        #region Commands
+
+        private Command _FilterTask;
+        public ICommand FilterTask
+        {
+            get
+            {
+                if (_FilterTask != null)
+                    return _FilterTask;
+                _FilterTask = new Command(_FilterTask_Exec);
+                return _FilterTask;
+            }
+        }
+
+        private void _FilterTask_Exec(object obj)
+        {
+            var project = obj as ViewProject;
+            if(project != null)
+            {
+                var list = ViewTasks.Where(x => x.projectId == project.Id);
+                ShowingTasks = new ObservableCollection<ViewTask>(list);
+            }
+            else
+            {
+                ShowingTasks = ViewTasks;
+            } 
+        }
+
+        #endregion
+
     }
 }

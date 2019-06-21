@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TMS.Client.ViewModels;
+using TMS.ViewModels;
 
 namespace TMS.Client.Windows
 {
@@ -19,9 +21,19 @@ namespace TMS.Client.Windows
     /// </summary>
     public partial class TaskWindow : Window
     {
-        public TaskWindow()
+        private ViewTask Context { get; set; }
+        
+        public TaskWindow(ViewTask task)
         {
             InitializeComponent();
+            Context = task;
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            Label_Project.Content = "Project: " + Context.projectName;
+            Label_Effort.Content = "Hours: " + Context.effort.ToString();
+            TextBlock_Description.Text = Context.description;
         }
     }
 }

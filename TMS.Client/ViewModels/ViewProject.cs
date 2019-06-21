@@ -9,19 +9,19 @@ namespace TMS.Client.ViewModels
 {
     class ViewProject
     {
-        [AutoGenerate(true, "Name")]
+        [AutoGenerate(true, "Name", 0)]
         public string name { get; set; }
 
-        [AutoGenerate(true, "Abbreviation")]
+        [AutoGenerate(true, "Abbreviation", 1)]
         public string abbreviation { get; set; }
 
-        [AutoGenerate(true, "Hours")]
+        [AutoGenerate(true, "Hours", 2)]
         public double effort { get; set; }
 
-        [AutoGenerate(true, "Begin date")]
+        [AutoGenerate(true, "Begin date", 3)]
         public DateTime start { get; set; }
 
-        [AutoGenerate(true, "End date")]
+        [AutoGenerate(true, "End date", 4)]
         public DateTime end { get; set; }
         
 
