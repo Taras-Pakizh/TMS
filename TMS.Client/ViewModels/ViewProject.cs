@@ -1,43 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TMS.Client.Attributes;
 
 namespace TMS.Client.ViewModels
 {
     class ViewProject
     {
-        [DisplayName("Name")]
+        [AutoGenerate(true, "Name")]
         public string name { get; set; }
 
-        [DisplayName("Abbreviation")]
+        [AutoGenerate(true, "Abbreviation")]
         public string abbreviation { get; set; }
 
-        [DisplayName("Hours")]
+        [AutoGenerate(true, "Hours")]
         public double effort { get; set; }
 
-        [DisplayName("Begin time")]
+        [AutoGenerate(true, "Begin date")]
         public DateTime start { get; set; }
 
-        [DisplayName("End time")]
+        [AutoGenerate(true, "End date")]
         public DateTime end { get; set; }
+        
 
-
-
-
-        [Display(AutoGenerateField = false)]
+        [AutoGenerate(false)]
         public int Id { get; set; }
 
-        [Display(AutoGenerateField = false)]
+        [AutoGenerate(false)]
         public string description { get; set; }
 
-        [Display(AutoGenerateField = false)]
-        public ICollection<int> riskIds { get; set; }
-
-        [Display(AutoGenerateField = false)]
+        [AutoGenerate(false)]
         public ICollection<int> taskIds { get; set; }
     }
 }

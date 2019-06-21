@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TMS.Client.Attributes;
 using TMS.Client.Validation;
 
 namespace TMS.Client.ViewModels

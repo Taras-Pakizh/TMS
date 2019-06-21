@@ -4,10 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TMS.Client.Windows"
+        xmlns:cc="clr-namespace:System.ComponentModel.DataAnnotations;assembly=System.ComponentModel.DataAnnotations"
+        xmlns:ccc="clr-namespace:System.ComponentModel.DataAnnotations.Schema;assembly=System.ComponentModel.DataAnnotations"
         mc:Ignorable="d"
         Title="EngineerWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <TabControl>
-        
+
         <TabItem IsSelected="True">
             <TabItem.Header>
                 <StackPanel>
@@ -16,24 +18,32 @@
             </TabItem.Header>
             <TabItem.Content>
                 <StackPanel>
-                    <DataGrid ItemsSource="{Binding Path=Reports, Mode=OneWay}" IsReadOnly="True">
 
-                    </DataGrid>
-                    
-                </StackPanel>
-            </TabItem.Content>
-        </TabItem>
-
-        <TabItem>
-            <TabItem.Header>
-                <StackPanel>
-                    <TextBlock Text="Create report"/>
-                </StackPanel>
-            </TabItem.Header>
-            <TabItem.Content>
-                <StackPanel>
-                    <DataGrid ItemsSource="{Binding Path=Reports, Mode=OneWay}" IsReadOnly="True">
-
+                    <DataGrid ItemsSource="{Binding Path=ViewReports, Mode=OneWay}"
+                              IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Open task"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Update"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Delete"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
                     </DataGrid>
 
                 </StackPanel>
@@ -48,7 +58,7 @@
             </TabItem.Header>
             <TabItem.Content>
                 <StackPanel>
-                    <DataGrid ItemsSource="{Binding Path=Projects, Mode=OneWay}" IsReadOnly="True">
+                    <DataGrid ItemsSource="{Binding Path=ViewProjects, Mode=OneWay}" IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
 
                     </DataGrid>
 
@@ -64,7 +74,7 @@
             </TabItem.Header>
             <TabItem.Content>
                 <StackPanel>
-                    <DataGrid ItemsSource="{Binding Path=Tasks, Mode=OneWay}" IsReadOnly="True">
+                    <DataGrid ItemsSource="{Binding Path=ViewTasks, Mode=OneWay}" IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
 
                     </DataGrid>
 

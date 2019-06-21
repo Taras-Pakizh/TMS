@@ -11,6 +11,7 @@ using TMS.ViewModels;
 using Task = System.Threading.Tasks.Task;
 using TaskData = TMS.Data.Task;
 using System.Reflection;
+using AutoMapper;
 
 namespace TMS.Client.ViewModels
 {
@@ -18,7 +19,10 @@ namespace TMS.Client.ViewModels
     {
         private ProxyWebApi _client = new ProxyWebApi();
 
-        public ApplicationView() { }
+        public ApplicationView()
+        {
+            Mapping.Initialize();
+        }
 
         public ProxyWebApi Proxy { get { return _client; } }
 
@@ -68,6 +72,17 @@ namespace TMS.Client.ViewModels
             }
         }
 
+        private ObservableCollection<ViewReport> _ViewReports;
+        public ObservableCollection<ViewReport> ViewReports
+        {
+            get { return _ViewReports; }
+            set
+            {
+                _ViewReports = value;
+                OnPropertyChanged(nameof(ViewReports));
+            }
+        }
+
         private ObservableCollection<ProjectView> _Projects;
         public ObservableCollection<ProjectView> Projects
         {
@@ -79,6 +94,17 @@ namespace TMS.Client.ViewModels
             }
         }
 
+        private ObservableCollection<ViewProject> _ViewProjects;
+        public ObservableCollection<ViewProject> ViewProjects
+        {
+            get { return _ViewProjects; }
+            set
+            {
+                _ViewProjects = value;
+                OnPropertyChanged(nameof(ViewProjects));
+            }
+        }
+
         private ObservableCollection<TaskView> _Tasks;
         public ObservableCollection<TaskView> Tasks
         {
@@ -87,6 +113,17 @@ namespace TMS.Client.ViewModels
             {
                 _Tasks = value;
                 OnPropertyChanged(nameof(Tasks));
+            }
+        }
+
+        private ObservableCollection<ViewTask> _ViewTasks;
+        public ObservableCollection<ViewTask> ViewTasks
+        {
+            get { return _ViewTasks; }
+            set
+            {
+                _ViewTasks = value;
+                OnPropertyChanged(nameof(ViewTasks));
             }
         }
 
@@ -134,6 +171,23 @@ namespace TMS.Client.ViewModels
                 Role = await _client.GetRoleAsync();
                 CurrentUser = await _client.GetCurrentUser(model.username);
             }
+        }
+
+        public async Task MapToUI()
+        {
+            await Task.Run(() =>
+            {
+                Mapping.SetContext(Reports, Tasks, Projects);
+
+                var viewReports = Mapper.Map<IEnumerable<ReportView>, IEnumerable<ViewReport>>(Reports
+                    .Where(x => x.engineerId == CurrentUser.Id));
+                var viewTasks = Mapper.Map<IEnumerable<TaskView>, IEnumerable<ViewTask>>(Tasks);
+                var viewProjects = Mapper.Map<IEnumerable<ProjectView>, IEnumerable<ViewProject>>(Projects);
+
+                ViewReports = new ObservableCollection<ViewReport>(viewReports);
+                ViewTasks = new ObservableCollection<ViewTask>(viewTasks);
+                ViewProjects = new ObservableCollection<ViewProject>(viewProjects);
+            });
         }
 
         #endregion

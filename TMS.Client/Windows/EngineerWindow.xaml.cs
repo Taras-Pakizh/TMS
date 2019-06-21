@@ -18,6 +18,11 @@ using System.Threading;
 using TMS.Services;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.ComponentModel;
+using System.Reflection;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections;
+using TMS.Client.Attributes;
 
 namespace TMS.Client.Windows
 {
@@ -41,6 +46,26 @@ namespace TMS.Client.Windows
             await Context.GetAll<ReportView>();
             await Context.GetAll<TaskView>();
             await Context.GetAll<ProjectView>();
+            await Context.MapToUI();
         }
+
+        private void DataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
+            var attributes = ((PropertyDescriptor)e.PropertyDescriptor).Attributes.OfType<AutoGenerateAttribute>();
+            
+            if (attributes == null)
+                e.Column.Visibility = Visibility.Collapsed;
+            else
+            {
+                var attribute = attributes.Single();
+                if (attribute.IsVisible)
+                {
+                    e.Column.Visibility = Visibility.Visible;
+                    e.Column.Header = attribute.Header;
+                }
+                else e.Column.Visibility = Visibility.Hidden;
+            }
+        }
+        
     }
 }

@@ -1,49 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TMS.Data;
+using TMS.Client.Attributes;
 
 namespace TMS.Client.ViewModels
 {
     class ViewReport
     {
-        [DisplayName("Task")]
+        [AutoGenerate(true, "Task")]
         public string taskName { get; set; }
 
-        [DisplayName("Engineer")]
-        public string engineerName { get; set; }
-
-        [DisplayName("Activity")]
+        [AutoGenerate(true, "Activity")]
         public ActivityType activity { get; set; }
 
-        [DisplayName("Status")]
+        [AutoGenerate(true, "Status")]
         public ReportStatus status { get; set; }
 
-        [DisplayName("Begin time")]
+        [AutoGenerate(true, "Begin date")]
         public DateTime start { get; set; }
 
-        [DisplayName("End time")]
+        [AutoGenerate(true, "End date")]
         public DateTime end { get; set; }
 
-        [DisplayName("Hours")]
+        [AutoGenerate(true, "Hours")]
         public double effort { get; set; }
 
 
-
-        [Display(AutoGenerateField = false)]
+        [AutoGenerate(false)]
         public int Id { get; set; }
 
-        [Display(AutoGenerateField = false)]
+        [AutoGenerate(false)]
         public string description { get; set; }
 
-        [Display(AutoGenerateField = false)]
+        [AutoGenerate(false)]
         public int taskId { get; set; }
 
-        [Display(AutoGenerateField = false)]
+        [AutoGenerate(false)]
         public int engineerId { get; set; }
     }
 }

@@ -33,3 +33,7 @@ D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\EngineerWi
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\bin\Debug\AutoMapper.dll
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\bin\Debug\AutoMapper.pdb
 D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\bin\Debug\AutoMapper.xml
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\ReportWindow.g.cs
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\TaskWindow.g.cs
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\ReportWindow.baml
+D:\LP\LP_6_semester\Practice\Project\TMS\TMS.Client\obj\Debug\Windows\TaskWindow.baml
