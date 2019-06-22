@@ -12,6 +12,8 @@ using Task = System.Threading.Tasks.Task;
 using TaskData = TMS.Data.Task;
 using System.Reflection;
 using AutoMapper;
+using System.Windows.Controls;
+using Xceed.Wpf.Toolkit;
 
 namespace TMS.Client.ViewModels
 {
@@ -83,6 +85,17 @@ namespace TMS.Client.ViewModels
             }
         }
 
+        private ObservableCollection<ViewReport> _ShowingReports;
+        public ObservableCollection<ViewReport> ShowingReports
+        {
+            get { return _ShowingReports; }
+            set
+            {
+                _ShowingReports = value;
+                OnPropertyChanged(nameof(ShowingReports));
+            }
+        }
+
         private ObservableCollection<ProjectView> _Projects;
         public ObservableCollection<ProjectView> Projects
         {
@@ -102,6 +115,17 @@ namespace TMS.Client.ViewModels
             {
                 _ViewProjects = value;
                 OnPropertyChanged(nameof(ViewProjects));
+            }
+        }
+
+        private ObservableCollection<ViewProject> _ShowingProjects;
+        public ObservableCollection<ViewProject> ShowingProjects
+        {
+            get { return _ShowingProjects; }
+            set
+            {
+                _ShowingProjects = value;
+                OnPropertyChanged(nameof(ShowingProjects));
             }
         }
 
@@ -200,14 +224,16 @@ namespace TMS.Client.ViewModels
                 ViewProjects = new ObservableCollection<ViewProject>(viewProjects);
 
                 ShowingTasks = ViewTasks;
+                ShowingReports = ViewReports;
+                ShowingProjects = ViewProjects;
             });
         }
 
         #endregion
 
-
-
         #region Commands
+
+        #region Tasks_Filter
 
         private Command _FilterTask;
         public ICommand FilterTask
@@ -234,6 +260,144 @@ namespace TMS.Client.ViewModels
                 ShowingTasks = ViewTasks;
             } 
         }
+
+        #endregion
+
+        #region Projects_Filter
+
+        private Command _FilterProjects;
+        public ICommand FilterProjects
+        {
+            get
+            {
+                if (_FilterProjects != null)
+                    return _FilterProjects;
+                _FilterProjects = new Command(_FilterProjects_Exec);
+                return _FilterProjects;
+            }
+        }
+
+        private void _FilterProjects_Exec(object obj)
+        {
+            var controllers = obj as UIElementCollection;
+            if (controllers == null)
+            {
+                var str = obj as string;
+                if (str == "All")
+                {
+                    ShowingProjects = ViewProjects;
+                }
+                return;
+            }
+
+            var pickers = new List<DateTimePicker>();
+
+            foreach (var item in controllers)
+            {
+                var picker = item as DateTimePicker;
+                if (picker != null)
+                    pickers.Add(picker);
+            }
+
+            var filters = new
+            {
+                start = pickers.Where(x => x.Name == "Filter_ProjectBegin").Single().Value,
+                end = pickers.Where(x => x.Name == "Filter_ProjectEnd").Single().Value
+            };
+
+            ShowingProjects = ViewProjects;
+            if(filters.start != null)
+            {
+                ShowingProjects = new ObservableCollection<ViewProject>
+                    (ShowingProjects.Where(x => x.start > filters.start));
+            }
+            if(filters.end != null)
+            {
+                ShowingProjects = new ObservableCollection<ViewProject>
+                    (ShowingProjects.Where(x => x.end < filters.end));
+            }
+        }
+
+        #endregion
+
+        #region Reports_Filter
+
+        private Command _FilterReports;
+        public ICommand FilterReports
+        {
+            get
+            {
+                if (_FilterReports != null)
+                    return _FilterReports;
+                _FilterReports = new Command(_FilterReports_Exec);
+                return _FilterReports;
+            }
+        }
+
+        private void _FilterReports_Exec(object obj)
+        {
+            var controllers = obj as UIElementCollection;
+            if(controllers == null)
+            {
+                var str = obj as string;
+                if(str == "All")
+                {
+                    ShowingReports = ViewReports;
+                }
+                return;
+            }
+
+            var comboBoxs = new List<ComboBox>();
+            var pickers = new List<DateTimePicker>();
+
+            foreach(var item in controllers)
+            {
+                var comboBox = item as ComboBox;
+                var picker = item as DateTimePicker;
+                if (comboBox != null)
+                    comboBoxs.Add(comboBox);
+                if (picker != null)
+                    pickers.Add(picker);
+            }
+
+            var filters = new
+            {
+                task = comboBoxs.Where(x => x.Name == "Filter_Tasks").Single().SelectedItem,
+                status = comboBoxs.Where(x => x.Name == "Filter_Status").Single().SelectedItem,
+                activity = comboBoxs.Where(x => x.Name == "Filter_Activity").Single().SelectedItem,
+                beginDate = pickers.Where(x => x.Name == "Filter_BeginTime").Single().Value,
+                endDate = pickers.Where(x => x.Name == "Filter_EndTime").Single().Value
+            };
+
+            ShowingReports = ViewReports;
+            if (filters.task != null)
+            {
+                ShowingReports = new ObservableCollection<ViewReport>
+                    (ShowingReports.Where(x => x.taskId == ((ViewTask)filters.task).Id));
+            }
+            if (filters.status != null)
+            {
+                ShowingReports = new ObservableCollection<ViewReport>
+                    (ShowingReports.Where(x => x.status == (ReportStatus)filters.status));
+            }
+            if (filters.activity != null)
+            {
+                ShowingReports = new ObservableCollection<ViewReport>
+                    (ShowingReports.Where(x => x.activity == (ActivityType)filters.activity));
+            }
+            if (filters.beginDate != null)
+            {
+                ShowingReports = new ObservableCollection<ViewReport>
+                    (ShowingReports.Where(x => x.start > filters.beginDate));
+            }
+            if (filters.endDate != null)
+            {
+                ShowingReports = new ObservableCollection<ViewReport>
+                    (ShowingReports.Where(x => x.end < filters.endDate));
+            }
+        }
+
+        #endregion
 
         #endregion
 

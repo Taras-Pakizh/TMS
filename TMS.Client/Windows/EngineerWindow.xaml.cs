@@ -40,7 +40,9 @@ namespace TMS.Client.Windows
         {
             InitializeComponent();
         }
-        
+
+        #region Events
+
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             await Context.GetAll<ReportView>();
@@ -102,7 +104,10 @@ namespace TMS.Client.Windows
 
         private void ViewReports_Click(object sender, RoutedEventArgs e)
         {
-            
+            var view = ((Button)sender).DataContext as ViewTask;
+            Filter_Tasks.SelectedItem = view;
+            Button_ReportFilter.Command.Execute(Button_ReportFilter.CommandParameter);
+            TabControl_Global.SelectedIndex = 0;
         }
 
         private void ViewTasks_Click(object sender, RoutedEventArgs e)
@@ -112,5 +117,7 @@ namespace TMS.Client.Windows
             Context.FilterTask.Execute(view);
             TabControl_Global.SelectedIndex = 2;
         }
+
+        #endregion
     }
 }

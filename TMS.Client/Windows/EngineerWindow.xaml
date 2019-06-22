@@ -4,11 +4,29 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TMS.Client.Windows"
+        xmlns:extended="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:data="clr-namespace:TMS.Data;assembly=TMS"
         mc:Ignorable="d"
         Title="EngineerWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Window.Resources>
         
+        <ObjectDataProvider x:Key="Enum_Status"
+            MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="data:ReportStatus"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="Enum_Activity"
+            MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="data:ActivityType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
     </Window.Resources>
+    
     <TabControl Name="TabControl_Global">
 
         <TabItem IsSelected="True">
@@ -20,7 +38,37 @@
             <TabItem.Content>
                 <StackPanel>
 
-                    <DataGrid ItemsSource="{Binding Path=ViewReports, Mode=OneWay}"
+                    <StackPanel Orientation="Horizontal" Name="FilterReports_Panel">
+
+                        <Label Content="Task:"/>
+                        <ComboBox Name="Filter_Tasks" ItemsSource="{Binding Path=ViewTasks, Mode=OneWay}" 
+                                  DisplayMemberPath="taskName" SelectedValuePath="Id">
+                        </ComboBox>
+
+                        <Label Content="Status:"/>
+                        <ComboBox Name="Filter_Status" ItemsSource="{Binding Source={StaticResource Enum_Status}}">
+                        </ComboBox>
+
+                        <Label Content="Activity:"/>
+                        <ComboBox Name="Filter_Activity" ItemsSource="{Binding Source={StaticResource Enum_Activity}}">
+                        </ComboBox>
+
+                        <Label Content="Begin date:"/>
+                        <extended:DateTimePicker Name="Filter_BeginTime">
+                            
+                        </extended:DateTimePicker>
+
+                        <Label Content="End date:"/>
+                        <extended:DateTimePicker Name="Filter_EndTime">
+                            
+                        </extended:DateTimePicker>
+                        
+                        <Button Name="Button_ReportFilter" Content="Show" Command="{Binding Path=FilterReports}" CommandParameter="{Binding ElementName=FilterReports_Panel, Path=Children}"/>
+                        <Button Content="Show All" Command="{Binding Path=FilterReports}" CommandParameter="All"/>
+
+                    </StackPanel>
+
+                    <DataGrid ItemsSource="{Binding Path=ShowingReports, Mode=OneWay}"
                               IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
                         
                         <DataGrid.Columns>
@@ -53,7 +101,25 @@
             </TabItem.Header>
             <TabItem.Content>
                 <StackPanel>
-                    <DataGrid ItemsSource="{Binding Path=ViewProjects, Mode=OneWay}" IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
+
+                    <StackPanel Orientation="Horizontal" Name="FilterProjects_Panel" >
+
+                        <Label Content="Begin date:"/>
+                        <extended:DateTimePicker Name="Filter_ProjectBegin">
+
+                        </extended:DateTimePicker>
+
+                        <Label Content="End date:"/>
+                        <extended:DateTimePicker Name="Filter_ProjectEnd">
+
+                        </extended:DateTimePicker>
+
+                        <Button Content="Show" Command="{Binding Path=FilterProjects}" CommandParameter="{Binding ElementName=FilterProjects_Panel, Path=Children}"/>
+                        <Button Content="Show All" Command="{Binding Path=FilterProjects}" CommandParameter="All"/>
+
+                    </StackPanel>
+
+                    <DataGrid ItemsSource="{Binding Path=ShowingProjects, Mode=OneWay}" IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
 
                         <DataGrid.Columns>
 
@@ -86,13 +152,14 @@
                     
                     <StackPanel Orientation="Horizontal">
 
+                        <Label Content="Project:"/>
                         <ComboBox Name="Filter_Project" ItemsSource="{Binding Path=ViewProjects, Mode=OneWay}" 
                                   DisplayMemberPath="name" SelectedValuePath="Id">
-                            
                         </ComboBox>
 
                         <Button Content="Show" Command="{Binding Path=FilterTask}" CommandParameter="{Binding ElementName=Filter_Project, Path=SelectedItem}"/>
                         <Button Content="Show All" Command="{Binding Path=FilterTask}"/>
+                        
                     </StackPanel>
 
                     <DataGrid ItemsSource="{Binding Path=ShowingTasks, Mode=OneWay}" IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
