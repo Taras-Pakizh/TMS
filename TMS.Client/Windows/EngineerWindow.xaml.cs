@@ -23,6 +23,7 @@ using System.Reflection;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections;
 using TMS.Client.Attributes;
+using AutoMapper;
 
 namespace TMS.Client.Windows
 {
@@ -89,17 +90,26 @@ namespace TMS.Client.Windows
 
         private void Update_Click(object sender, RoutedEventArgs e)
         {
-
+            var view = ((Button)sender).DataContext as ViewReport;
+            var window = new ReportWindow(view, ReportOperation.Update, Context.CurrentUser, Context.ViewTasks);
+            window.DataContext = Context;
+            window.Show();
+            
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)
         {
-
+            var view = ((Button)sender).DataContext as ViewReport;
+            var window = new ReportWindow(view, ReportOperation.Delete, Context.CurrentUser, Context.ViewTasks);
+            window.DataContext = Context;
+            window.Show();
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-
+            var window = new ReportWindow(null, ReportOperation.Add, Context.CurrentUser, Context.ViewTasks);
+            window.DataContext = Context;
+            window.Show();
         }
 
         private void ViewReports_Click(object sender, RoutedEventArgs e)
@@ -118,6 +128,28 @@ namespace TMS.Client.Windows
             TabControl_Global.SelectedIndex = 2;
         }
 
+        private void ResetReportFilters_Click(object sender, RoutedEventArgs e)
+        {
+            Filter_Tasks.SelectedIndex = -1;
+            Filter_Status.SelectedIndex = -1;
+            Filter_Activity.SelectedIndex = -1;
+            Filter_BeginTime.Value = null;
+            Filter_EndTime.Value = null;
+        }
+
+        private void ResetProjectFilters_Click(object sender, RoutedEventArgs e)
+        {
+            Filter_ProjectBegin.Value = null;
+            Filter_ProjectEnd.Value = null;
+        }
+
+        private void ResetTaskFilters_Click(object sender, RoutedEventArgs e)
+        {
+            Filter_Project.SelectedIndex = -1;
+        }
+
         #endregion
+
+        
     }
 }

@@ -39,5 +39,17 @@ namespace TMS.Server.Controllers
         {
             return Mapper.Map<User, UserView>(service.GetAll().Where(x => x.login == login).Single());
         }
+
+        //---------------------GOVNO-------------------------------
+        public IHttpActionResult Put([FromBody]UserView model)
+        {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+
+            try { service.Update(model); }
+
+            catch (Exception e) { BadRequest(e.Message); }
+
+            return Ok();
+        }
     }
 }

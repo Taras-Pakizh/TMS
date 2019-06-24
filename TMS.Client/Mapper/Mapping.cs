@@ -85,6 +85,7 @@ namespace TMS.Client
                             return desc;
                         }));
                 ctg.CreateMap<ViewReport, ReportView>();
+                ctg.CreateMap<ReportValidationModel, ViewReport>();
             });
 
             isInitialize = true;

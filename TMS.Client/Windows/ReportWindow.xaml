@@ -4,9 +4,58 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TMS.Client.Windows"
+        xmlns:extended="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:data="clr-namespace:TMS.Data;assembly=TMS"
         mc:Ignorable="d"
-        Title="ReportWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Report" Height="450" Width="800"
+        Name="MyWindow">
+
+    <Window.Resources>
+
+        <ObjectDataProvider x:Key="Enum_Activity"
+            MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="data:ActivityType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+    </Window.Resources>
+
+    <StackPanel>
+
+        <Label HorizontalAlignment="Center" Content="{Binding ElementName=MyWindow, Path=Header}"/>
+
+        <Label Content="Task:"/>
+        <ComboBox Name="ComboBox_Tasks" ItemsSource="{Binding ElementName=MyWindow, Path=Tasks, Mode=OneWay}" 
+                  DisplayMemberPath="taskName" SelectedValuePath="Id" 
+                  IsEnabled="{Binding ElementName=MyWindow, Path=Active}">
+        </ComboBox>
+
+        <Label Content="Activity:"/>
+        <ComboBox Name="ComboBox_Activity" ItemsSource="{Binding Source={StaticResource Enum_Activity}}"
+                  IsEnabled="{Binding ElementName=MyWindow, Path=Active}">
+        </ComboBox>
+
+        <Label Content="Begin date:"/>
+        <extended:DateTimePicker Name="DateTimePicker_BeginTime" Language="en-US"
+                  IsEnabled="{Binding ElementName=MyWindow, Path=Active}">
+
+        </extended:DateTimePicker>
+
+        <Label Content="End date:"/>
+        <extended:DateTimePicker Name="DateTimePicker_EndTime" Language="en-US"
+                  IsEnabled="{Binding ElementName=MyWindow, Path=Active}">
+
+        </extended:DateTimePicker>
+
+        <Label Content="Description:"/>
+        <RichTextBox Name="RichTextBox_Description" VerticalAlignment="Bottom"
+                  IsEnabled="{Binding ElementName=MyWindow, Path=Active}"/>
+
+        <Label Name="Label_Error_list"/>
+        <Button Content="Submit" Click="Submit_Click"/>
+
+    </StackPanel>
+    
 </Window>

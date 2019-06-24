@@ -25,5 +25,18 @@ namespace TMS.ViewModels
         {
             return Id;
         }
+
+        #region GOVNO
+
+        public int team_id { get; set; }
+        public string FullName
+        {
+            get
+            {
+                return $"{firstName} {lastName}";
+            }
+        }
+
+        #endregion
     }
 }

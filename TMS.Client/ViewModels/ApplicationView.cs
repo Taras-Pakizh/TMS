@@ -229,6 +229,36 @@ namespace TMS.Client.ViewModels
             });
         }
 
+        public async Task Download<T>() where T : IViewBase
+        {
+            await GetAll<T>();
+            var type = typeof(T);
+
+            await Task.Run(() =>
+            {
+                var MainProperty = this.GetType().GetProperty
+                (type.Name.Substring(0, type.Name.IndexOf("View")) + "s");
+
+                Mapping.SetContext((IEnumerable<IViewBase>)MainProperty.GetValue(this));
+
+                ViewReports = new ObservableCollection<ViewReport>
+                    (Mapper.Map<IEnumerable<ReportView>, IEnumerable<ViewReport>>(Reports
+                        .Where(x => x.engineerId == CurrentUser.Id)));
+                ViewTasks = new ObservableCollection<ViewTask>
+                    (Mapper.Map<IEnumerable<TaskView>, IEnumerable<ViewTask>>(Tasks));
+                ViewProjects = new ObservableCollection<ViewProject>
+                    (Mapper.Map<IEnumerable<ProjectView>, IEnumerable<ViewProject>>(Projects));
+
+                var ViewProperty = this.GetType().GetProperty
+                    ("View" + type.Name.Substring(0, type.Name.IndexOf("View")) + "s");
+
+                var ShowingProperty = this.GetType().GetProperty
+                    ("Showing" + type.Name.Substring(0, type.Name.IndexOf("View")) + "s");
+
+                ShowingProperty.SetValue(this, ViewProperty.GetValue(this));
+            });
+        }
+
         #endregion
 
         #region Commands
@@ -247,7 +277,7 @@ namespace TMS.Client.ViewModels
             }
         }
 
-        private void _FilterTask_Exec(object obj)
+        private async void _FilterTask_Exec(object obj)
         {
             var project = obj as ViewProject;
             if(project != null)
@@ -257,7 +287,15 @@ namespace TMS.Client.ViewModels
             }
             else
             {
-                ShowingTasks = ViewTasks;
+                var str = obj as string;
+                if(str == "All")
+                {
+                    ShowingTasks = ViewTasks;
+                }
+                if (str == "Download")
+                {
+                    await Download<TaskView>();
+                }
             } 
         }
 
@@ -277,7 +315,7 @@ namespace TMS.Client.ViewModels
             }
         }
 
-        private void _FilterProjects_Exec(object obj)
+        private async void _FilterProjects_Exec(object obj)
         {
             var controllers = obj as UIElementCollection;
             if (controllers == null)
@@ -286,6 +324,10 @@ namespace TMS.Client.ViewModels
                 if (str == "All")
                 {
                     ShowingProjects = ViewProjects;
+                }
+                if (str == "Download")
+                {
+                    await Download<ProjectView>();
                 }
                 return;
             }
@@ -334,7 +376,7 @@ namespace TMS.Client.ViewModels
             }
         }
 
-        private void _FilterReports_Exec(object obj)
+        private async void _FilterReports_Exec(object obj)
         {
             var controllers = obj as UIElementCollection;
             if(controllers == null)
@@ -343,6 +385,10 @@ namespace TMS.Client.ViewModels
                 if(str == "All")
                 {
                     ShowingReports = ViewReports;
+                }
+                if(str == "Download")
+                {
+                    await Download<ReportView>();
                 }
                 return;
             }

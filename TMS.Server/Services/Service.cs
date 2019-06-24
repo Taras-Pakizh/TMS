@@ -24,6 +24,21 @@ namespace TMS.Server.Services
             set = context.Set<T>();
         }
 
+        #region Govno
+
+        public Tview AddNEW(Tview model)
+        {
+            var entity = Mapper.Map<Tview, T>(model);
+            Mapping.cx.Set<T>().Add(entity);
+            Mapping.cx.SaveChanges();
+            var i = Mapper.Map<T, Tview>(entity);
+            return i;
+        }
+
+
+
+        #endregion
+
         public IEnumerable<T> GetAll()
         {
             return set;

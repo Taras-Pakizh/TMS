@@ -46,16 +46,20 @@ namespace TMS.Server.Controllers
             return Mapper.Map<Task, TaskView>(service.Get(id));
         }
 
+        //--------------------------Govno ----------------------------------
         // POST api/Report
-        public IHttpActionResult Post([FromBody]TaskView model)
+        public TaskView Post([FromBody]TaskView model)
         {
-            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            TaskView i;
+            if (!ModelState.IsValid) { return null; }
 
-            try { service.Add(model); }
+            try
+            {
+                i = service.AddNEW(model);
+                return i;
+            }
 
-            catch (Exception e) { BadRequest(e.Message); }
-
-            return Ok();
+            catch (Exception e) { return null; }
         }
 
         // PUT api/Report

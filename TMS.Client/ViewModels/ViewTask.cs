@@ -7,7 +7,7 @@ using TMS.Client.Attributes;
 
 namespace TMS.Client.ViewModels
 {
-    public class ViewTask
+    public class ViewTask:IView
     {
         [AutoGenerate(true, "Hours", 0)]
         public double effort { get; set; }

@@ -34,16 +34,20 @@ namespace TMS.Server.Controllers
             return Mapper.Map<Project, ProjectView>(service.Get(id));
         }
 
+        //------------------GOVNO-------------------
         // POST api/Report
-        public IHttpActionResult Post([FromBody]ProjectView model)
+        public ProjectView Post([FromBody]ProjectView model)
         {
-            if (!ModelState.IsValid) { return BadRequest(ModelState); }
+            ProjectView i;
+            if (!ModelState.IsValid) { return null; }
 
-            try { service.Add(model); }
+            try
+            {
+                i = service.AddNEW(model);
+                return i;
+            }
 
-            catch (Exception e) { BadRequest(e.Message); }
-
-            return Ok();
+            catch (Exception e) { return null; }
         }
 
         // PUT api/Report

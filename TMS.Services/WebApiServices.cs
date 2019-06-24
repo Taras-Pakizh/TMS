@@ -129,6 +129,17 @@ namespace TMS.Services
             }
         }
 
+        #region Govno
+
+        public Tview AddNEW<Tview>(Tview model) where Tview : IViewBase
+        {
+            var service = new Service<Tview>(CreateClient());
+            var i = service.AddNEW(model);
+            return i;
+        }
+
+        #endregion
+
         //CRUD операції
         #region CRUD
 

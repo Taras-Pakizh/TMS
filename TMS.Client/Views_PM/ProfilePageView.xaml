@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="TMS.Client.Project_Manager.Views.ProfilePageView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TMS.Client.Project_Manager.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Background="LawnGreen">
+    <Grid Name="panel">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label Content="MyProfile" HorizontalAlignment="Center" Foreground="White"  Margin="0,15" VerticalAlignment="Top" FontSize="20"/>
+            <StackPanel Orientation="Horizontal" Margin="40,0">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Margin="15,0">
+                    <Image Source="..\Images\profile.png" Width="50" Height="50" HorizontalAlignment="Center" Margin="5"></Image>
+                    <TextBlock Text="{Binding User.FullName}" FontStyle="Italic" Foreground="White"  HorizontalAlignment="Center" Margin="5"/>
+                    <TextBlock Text="{Binding User.email, UpdateSourceTrigger=PropertyChanged}" Foreground="White" Name="email" FontSize="14"  HorizontalAlignment="Center" Margin="5" MouseDown="TextBlock_MouseDown"/>
+                    <TextBlock Text="{Binding User.role}" FontSize="14"  Foreground="White" HorizontalAlignment="Center" Margin="5" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center"  Margin="15,0">
+                    <TextBlock Text="{Binding Days}" Foreground="White" FontStyle="Italic" HorizontalAlignment="Center" Margin="5" FontSize="14"/>
+                    <TextBlock Text="{Binding ApproveCount}" FontSize="14" Foreground="White"  HorizontalAlignment="Center" Margin="5" />
+                    <!--<TextBlock Text="{Binding User.role}" FontSize="14"  HorizontalAlignment="Center" Margin="5" />-->
+                </StackPanel>
+            </StackPanel>
+            <Label Content="{Binding TeamName}" HorizontalAlignment="Center" Foreground="White" Margin="0,15" VerticalAlignment="Top" FontSize="20"/>
+        </StackPanel>
+
+    </Grid>
+</UserControl>

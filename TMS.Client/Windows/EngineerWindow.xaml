@@ -38,36 +38,57 @@
             <TabItem.Content>
                 <StackPanel>
 
-                    <StackPanel Orientation="Horizontal" Name="FilterReports_Panel">
+                    <Grid>
 
-                        <Label Content="Task:"/>
-                        <ComboBox Name="Filter_Tasks" ItemsSource="{Binding Path=ViewTasks, Mode=OneWay}" 
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Orientation="Horizontal" Name="FilterReports_Panel" Grid.Column="0">
+
+                            <Label Content="Task:"/>
+                            <ComboBox Name="Filter_Tasks" ItemsSource="{Binding Path=ViewTasks, Mode=OneWay}" 
                                   DisplayMemberPath="taskName" SelectedValuePath="Id">
-                        </ComboBox>
+                            </ComboBox>
 
-                        <Label Content="Status:"/>
-                        <ComboBox Name="Filter_Status" ItemsSource="{Binding Source={StaticResource Enum_Status}}">
-                        </ComboBox>
+                            <Label Content="Status:"/>
+                            <ComboBox Name="Filter_Status" ItemsSource="{Binding Source={StaticResource Enum_Status}}">
+                            </ComboBox>
 
-                        <Label Content="Activity:"/>
-                        <ComboBox Name="Filter_Activity" ItemsSource="{Binding Source={StaticResource Enum_Activity}}">
-                        </ComboBox>
+                            <Label Content="Activity:"/>
+                            <ComboBox Name="Filter_Activity" ItemsSource="{Binding Source={StaticResource Enum_Activity}}">
+                            </ComboBox>
 
-                        <Label Content="Begin date:"/>
-                        <extended:DateTimePicker Name="Filter_BeginTime">
-                            
-                        </extended:DateTimePicker>
+                            <Label Content="Begin date:"/>
+                            <extended:DateTimePicker Name="Filter_BeginTime" Language="en-US">
 
-                        <Label Content="End date:"/>
-                        <extended:DateTimePicker Name="Filter_EndTime">
-                            
-                        </extended:DateTimePicker>
-                        
-                        <Button Name="Button_ReportFilter" Content="Show" Command="{Binding Path=FilterReports}" CommandParameter="{Binding ElementName=FilterReports_Panel, Path=Children}"/>
-                        <Button Content="Show All" Command="{Binding Path=FilterReports}" CommandParameter="All"/>
+                            </extended:DateTimePicker>
 
-                    </StackPanel>
+                            <Label Content="End date:"/>
+                            <extended:DateTimePicker Name="Filter_EndTime" Language="en-US">
 
+                            </extended:DateTimePicker>
+
+                            <Button Name="Button_ReportFilter" Content="Apply" Command="{Binding Path=FilterReports}" 
+                                    CommandParameter="{Binding ElementName=FilterReports_Panel, Path=Children}"/>
+
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Column="1">
+
+                            <Button Content="Reset" Command="{Binding Path=FilterReports}"
+                                CommandParameter="All" Click="ResetReportFilters_Click"/>
+
+                            <Button Content="Download" Command="{Binding Path=FilterReports}"
+                                CommandParameter="Download"/>
+
+                            <Button Content="Create Report" Click="Add_Click" />
+
+                        </StackPanel>
+
+                    </Grid>
+                    
                     <DataGrid ItemsSource="{Binding Path=ShowingReports, Mode=OneWay}"
                               IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
                         
@@ -102,23 +123,41 @@
             <TabItem.Content>
                 <StackPanel>
 
-                    <StackPanel Orientation="Horizontal" Name="FilterProjects_Panel" >
+                    <Grid>
+                        
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
 
-                        <Label Content="Begin date:"/>
-                        <extended:DateTimePicker Name="Filter_ProjectBegin">
+                        <StackPanel Orientation="Horizontal" Name="FilterProjects_Panel" Grid.Column="0">
 
-                        </extended:DateTimePicker>
+                            <Label Content="Begin date:"/>
+                            <extended:DateTimePicker Name="Filter_ProjectBegin" Language="en-US">
 
-                        <Label Content="End date:"/>
-                        <extended:DateTimePicker Name="Filter_ProjectEnd">
+                            </extended:DateTimePicker>
 
-                        </extended:DateTimePicker>
+                            <Label Content="End date:"/>
+                            <extended:DateTimePicker Name="Filter_ProjectEnd" Language="en-US">
 
-                        <Button Content="Show" Command="{Binding Path=FilterProjects}" CommandParameter="{Binding ElementName=FilterProjects_Panel, Path=Children}"/>
-                        <Button Content="Show All" Command="{Binding Path=FilterProjects}" CommandParameter="All"/>
+                            </extended:DateTimePicker>
 
-                    </StackPanel>
+                            <Button Content="Apply" Command="{Binding Path=FilterProjects}" CommandParameter="{Binding ElementName=FilterProjects_Panel, Path=Children}"/>
 
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Column="1">
+
+                            <Button Content="Reset" Command="{Binding Path=FilterProjects}"
+                                CommandParameter="All" Click="ResetProjectFilters_Click"/>
+
+                            <Button Content="Download" Command="{Binding Path=FilterProjects}"
+                                CommandParameter="Download"/>
+
+                        </StackPanel>
+
+                    </Grid>
+                    
                     <DataGrid ItemsSource="{Binding Path=ShowingProjects, Mode=OneWay}" IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
 
                         <DataGrid.Columns>
@@ -149,19 +188,37 @@
             </TabItem.Header>
             <TabItem.Content>
                 <StackPanel>
-                    
-                    <StackPanel Orientation="Horizontal">
 
-                        <Label Content="Project:"/>
-                        <ComboBox Name="Filter_Project" ItemsSource="{Binding Path=ViewProjects, Mode=OneWay}" 
-                                  DisplayMemberPath="name" SelectedValuePath="Id">
-                        </ComboBox>
-
-                        <Button Content="Show" Command="{Binding Path=FilterTask}" CommandParameter="{Binding ElementName=Filter_Project, Path=SelectedItem}"/>
-                        <Button Content="Show All" Command="{Binding Path=FilterTask}"/>
+                    <Grid>
                         
-                    </StackPanel>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
 
+                        <StackPanel Orientation="Horizontal" Grid.Column="0">
+
+                            <Label Content="Project:"/>
+                            <ComboBox Name="Filter_Project" ItemsSource="{Binding Path=ViewProjects, Mode=OneWay}" 
+                                  DisplayMemberPath="name" SelectedValuePath="Id">
+                            </ComboBox>
+
+                            <Button Content="Apply" Command="{Binding Path=FilterTask}" CommandParameter="{Binding ElementName=Filter_Project, Path=SelectedItem}"/>
+
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Column="1">
+
+                            <Button Content="Reset" Command="{Binding Path=FilterTask}"
+                                Click="ResetTaskFilters_Click" CommandParameter="All"/>
+
+                            <Button Content="Download"
+                                Command="{Binding Path=FilterTask}" CommandParameter="Download"/>
+
+                        </StackPanel>
+                        
+                    </Grid>
+                    
                     <DataGrid ItemsSource="{Binding Path=ShowingTasks, Mode=OneWay}" IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
 
                         <DataGrid.Columns>

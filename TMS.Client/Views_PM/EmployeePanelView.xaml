@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="TMS.Client.Project_Manager.Views.EmployeePanelView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TMS.Client.Project_Manager.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Background="LawnGreen">
+    <Grid >
+        <Button Content="Back" Name="Back" HorizontalAlignment="Left" Margin="700,20,0,0" VerticalAlignment="Top" Width="75">
+           
+            <Button.BorderBrush>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" >
+
+                    <GradientStop Color="Red" Offset="0" />
+
+                    <GradientStop Color="Yellow" Offset="1.0" />
+
+                </LinearGradientBrush>
+            </Button.BorderBrush>
+            <Button.Foreground>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1" >
+                    <GradientStop Color="Red" Offset="0.0"/>
+                    <GradientStop Color="Blue" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Button.Foreground>
+        </Button>
+        <StackPanel Margin="50, 10" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5">
+                <Image HorizontalAlignment="Center" Source="..\Images\user.png" Width="50" Height="50" Margin="10"></Image>
+                <TextBlock Text="Name" x:Name="Name" Margin="0,5" FontSize="16" Foreground="White"></TextBlock>
+                <TextBlock Text="Email" x:Name="Email" Margin="0,5" FontSize="16" Foreground="White"></TextBlock>
+                <TextBlock Text="Role" x:Name="Role" Margin="0,5" FontSize="16" Foreground="White"></TextBlock>
+            </StackPanel>
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5">
+                <TextBlock Text="FrontEnd_Developing: 0 h" x:Name="BackEnd_Developing" Foreground="White" Margin="0,5" FontSize="14"></TextBlock>
+                <TextBlock Text="Email" x:Name="FrontEnd_Developing" Margin="0,5" Foreground="White" FontSize="14"></TextBlock>
+                <TextBlock Text="Role" x:Name="Testing" Margin="0,5" FontSize="14" Foreground="White"></TextBlock>
+                <TextBlock Text="Role" x:Name="UI_Designing" Margin="0,5" FontSize="14" Foreground="White"></TextBlock>
+                <TextBlock Text="Role" x:Name="DB_Designing" Margin="0,5" FontSize="14" Foreground="White"></TextBlock>
+                <TextBlock Text="Role" x:Name="Bug_fixing" Margin="0,5" FontSize="14" Foreground="White"></TextBlock>
+            </StackPanel>
+        </StackPanel>
+        <DataGrid Name="Reports" ColumnWidth="*" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="325" Margin="288,55,0,0" VerticalAlignment="Top" Width="450">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Activity" MaxWidth="70"  Binding="{Binding activity }"></DataGridTextColumn>
+                <DataGridTextColumn Header="Start" MaxWidth="50" Binding="{Binding start, StringFormat=dd-MM-yyyy}"></DataGridTextColumn>
+                <DataGridTextColumn Header="End" MaxWidth="50" Binding="{Binding end, StringFormat=dd-MM-yyyy}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Description" Binding="{Binding description }"></DataGridTextColumn>
+                <DataGridTextColumn Header="Effort" MaxWidth="40" Binding="{Binding effort }"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label Content="Reports:" HorizontalAlignment="Left" Foreground="White" Margin="288,15,0,0" VerticalAlignment="Top" FontSize="20"/>
+        <CheckBox Content="Approves" Name="Approve" HorizontalAlignment="Left" Foreground="White" Margin="295,390,0,0" VerticalAlignment="Top" Checked="Approve_Checked" Unchecked="Approve_Checked"/>
+
+
+
+    </Grid>
+</UserControl>

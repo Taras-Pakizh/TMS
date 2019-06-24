@@ -42,6 +42,17 @@ namespace TMS.Services
             throw new Exception("Read as string is fucked");
         }
 
+        #region Govno
+
+        public Tview AddNEW(Tview model)
+        {
+            HttpResponseMessage response = _client.PostAsJsonAsync("api/" + _typeName, model).Result;
+            var i = ReadAs<Tview>(response);
+            return i;
+        }
+
+        #endregion
+
         public IEnumerable<Tview> GetAll()
         {
             HttpResponseMessage response = _client.GetAsync("api/" + _typeName).Result;

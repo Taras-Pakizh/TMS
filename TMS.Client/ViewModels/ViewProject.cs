@@ -7,7 +7,7 @@ using TMS.Client.Attributes;
 
 namespace TMS.Client.ViewModels
 {
-    class ViewProject
+    class ViewProject:IView
     {
         [AutoGenerate(true, "Name", 0)]
         public string name { get; set; }

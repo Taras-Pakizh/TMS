@@ -5,23 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using TMS.Data;
 using TMS.Client.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace TMS.Client.ViewModels
 {
-    class ViewReport
+    public class ViewReport:IView
     {
         [AutoGenerate(true, "Task", 0)]
         public string taskName { get; set; }
-
+        
         [AutoGenerate(true, "Activity", 1)]
         public ActivityType activity { get; set; }
-
+        
         [AutoGenerate(true, "Status", 2)]
         public ReportStatus status { get; set; }
-
+        
         [AutoGenerate(true, "Begin date", 3)]
         public DateTime start { get; set; }
-
+        
         [AutoGenerate(true, "End date", 4)]
         public DateTime end { get; set; }
 
@@ -31,10 +32,10 @@ namespace TMS.Client.ViewModels
 
         [AutoGenerate(false)]
         public int Id { get; set; }
-
+        
         [AutoGenerate(false)]
         public string description { get; set; }
-
+        
         [AutoGenerate(false)]
         public int taskId { get; set; }
 
