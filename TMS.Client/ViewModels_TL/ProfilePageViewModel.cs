@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TMS.Data;
 using TMS.Services;
 using TMS.ViewModels;
 
@@ -17,6 +18,30 @@ namespace TMS.Client.TeamLead.ViewModels
         public string Projects { get; set; }
         public string ApproveCount { get; set; }
         public string TeamName { get; set; }
+
+        public WebApiServices GetClient
+        {
+            get { return services; }
+        }
+
+        public ProfilePageViewModel(UserView currentUser, WebApiServices context)
+        {
+            services = context;
+            User = currentUser;
+            ApproveCount = "Загальна кількість\n" + "підтверджених звітів: " +
+                services.GetAll<ApproveView>().Where(x => x.approveAuthorId == User.Id).Count();
+            TeamName = "Team name: " + services.Get<TeamView>(User.team_id).name;
+
+            //Govno?
+            var randomEngineer = services.GetAll<UserView>().Where(x => x.role == Role.Engineer).Single();
+            var reports = services.GetAll<ReportView>().Where(x => x.engineerId == randomEngineer.Id).ToList();
+            int day = 0;
+            foreach (var i in reports)
+            {
+                day += i.end.Day - i.start.Day;
+            }
+            Days = "Загальна кількість днів\n" + "роботи над проектами: " + day;
+        }
 
         public ProfilePageViewModel()
         {

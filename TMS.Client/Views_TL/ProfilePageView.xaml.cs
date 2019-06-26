@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TMS.Client.TeamLead.ViewModels;
 using TMS.Services;
 using TMS.ViewModels;
 
@@ -23,21 +24,21 @@ namespace TMS.Client.TeamLead.Views
     public partial class ProfilePageView : UserControl
     {
         static private WebApiServices services = new WebApiServices();
-        public UserView Employees { get; set; }
-        DialogBox dialogBox = new DialogBox();
 
+        public UserView Employees { get; set; }
+
+        DialogBox dialogBox = new DialogBox();
 
         public ProfilePageView()
         {
             InitializeComponent();
-            panel.Children.Add(dialogBox);
-            services.Authorization("Pakizh_engineer", "Taras20.");
-            Employees = services.Get<UserView>(1);
+        }
 
-            //Employees = result;
-            //FullName.Text = result.FullName;
-            //Role.Text = result.role.ToString();
-            //Email.RaiseEven
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            services = ((ProfilePageViewModel)DataContext).GetClient;
+            panel.Children.Add(dialogBox);
+            Employees = ((ProfilePageViewModel)DataContext).User;
         }
 
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
@@ -47,15 +48,14 @@ namespace TMS.Client.TeamLead.Views
                 string temp = Microsoft.VisualBasic.Interaction.InputBox("Enter new e-mail:", "EDIT EMAIL", Employees.email);
                 if (Employees.email != temp)
                 {
-                    services.Authorization("Pakizh_engineer", "Taras20.");
-                    UserView userEdit = services.Get<UserView>(1);
+                    UserView userEdit = services.Get<UserView>(Employees.Id);
                     userEdit.email = temp;
                     try
                     {
                         if (services.Update(userEdit))
                         {
                             MessageBox.Show("OK");
-                            Employees = services.Get<UserView>(1);
+                            Employees = services.Get<UserView>(Employees.Id);
                             email.Text = temp;
                         }
                     }
