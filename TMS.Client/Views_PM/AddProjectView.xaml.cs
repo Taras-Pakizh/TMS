@@ -25,7 +25,6 @@ namespace TMS.Client.Project_Manager.Views
         static private WebApiServices services = new WebApiServices();
         ProjectView newProject = null;
         TaskView newTask = null;
-        TaskView _taskToDelete = null;
         public AddProjectView()
         {
             InitializeComponent();

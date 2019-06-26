@@ -49,6 +49,7 @@ namespace TMS.Client.Project_Manager
         {
             DataContext = new ProjectsViewModel();
             default_image.Visibility = Visibility.Collapsed;
+            this.Width = 1200;
         }
 
         private void LoadEmployeesPage_Click(object sender, RoutedEventArgs e)

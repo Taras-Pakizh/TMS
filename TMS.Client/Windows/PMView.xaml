@@ -7,7 +7,7 @@
         xmlns:viewmodels="clr-namespace:TMS.Client.Project_Manager.ViewModels"
         xmlns:views="clr-namespace:TMS.Client.Project_Manager.Views"
         mc:Ignorable="d"
-        Title="Project Manager" Height="450" Width="900" WindowStartupLocation="CenterScreen" Background="LawnGreen" Loaded="Window_Loaded">
+        Title="Project Manager" Height="550" Width="900" WindowStartupLocation="CenterScreen" Background="LawnGreen" Loaded="Window_Loaded">
     <Window.Resources>
         <DataTemplate x:Name="addProjectsVM" DataType="{x:Type viewmodels:AddProjectViewModel}">
             <views:AddProjectView DataContext="{Binding}"/>
@@ -24,7 +24,7 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="420"/>
+            <RowDefinition Height="520"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -32,22 +32,21 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0" Grid.Row="0" Width="80" Margin="0 0 0 0" Background="#FFEAE8E8">
-            <Button  x:Name="LoadAddProjectPage" Visibility="Visible" ToolTip="View Reports"  Margin="10 10 10 10" 
-                     Click="LoadAddProjectPage_Click" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}">
-                <Image Source="..\Images\add.png" Width="50" Height="50" OpacityMask="Black"></Image>
+            <Button  x:Name="LoadAddProjectPage" Visibility="Visible" ToolTip="View Reports"  Margin="10 10 10 10" Click="LoadAddProjectPage_Click" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                <Image Source="../Images/add.png" Width="50" Height="50" OpacityMask="Black"></Image>
             </Button>
             <Button x:Name="LoadProjectsPage" ToolTip="View Reports"  Margin="10 80 10 10" Click="LoadProjectsPage_Click">
-                <Image Source="..\Images\reports.png" Width="50" Height="50"></Image>
+                <Image Source="../Images/reports.png" Width="50" Height="50"></Image>
             </Button>
             <Button ToolTip="View Employees" x:Name="LoadEmployeesPage" Margin="10" Click="LoadEmployeesPage_Click">
-                <Image Source="..\Images\emloyees.png" Width="50" Height="50"></Image>
+                <Image Source="../Images/emloyees.png" Width="50" Height="50"></Image>
             </Button>
             <Button ToolTip="View Profile" x:Name="LoadProfilePage" Margin="10" Click="LoadProfilePage_Click">
-                <Image Source="..\Images\profile.png" Width="50" Height="50"></Image>
+                <Image Source="../Images/profile.png" Width="50" Height="50"></Image>
             </Button>
         </StackPanel>
         <ContentControl Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" 
                         Content="{Binding}"/>
-        <Image x:Name="default_image" Source="..\Images\Default.png" Grid.Row="0" Grid.Column="1" ></Image>
+        <Image x:Name="default_image" Source="../Images/Default.png" Grid.Row="0" Grid.Column="1" ></Image>
     </Grid>
 </Window>

@@ -26,6 +26,7 @@ namespace TMS.Client.Project_Manager.Views
     public partial class ProjectsView : UserControl
     {
         static private WebApiServices services = new WebApiServices();
+        TaskView newTask = null;
         public ProjectsView()
         {
             InitializeComponent();
@@ -45,7 +46,10 @@ namespace TMS.Client.Project_Manager.Views
             var selectedItem = dgProjects.SelectedItem as ProjectView;
             return selectedItem.Id;
         }
-
+        public ProjectView GetClickedProject()
+        {
+            return dgProjects.SelectedItem as ProjectView;
+        }
         // Forwarding to list of tasks depending on project clicked
         public void ForwardToTasks()
         {
@@ -53,13 +57,40 @@ namespace TMS.Client.Project_Manager.Views
             dgTasks.Visibility = Visibility.Visible;
             btnBack.Visibility = Visibility.Visible;
             filterPanel.Visibility = Visibility.Visible;
-            chkWithRep.IsChecked = true;
 
             int selectedProject = GetClickedProjectId();
 
-            //colStatus.Visibility = Visibility.Visible;
-            dgTasks.ItemsSource = GetTasksWithReports().Where(x => x.projectId == selectedProject);
+            dgTasks.ItemsSource = GetTasksWithReports().Where(x => x.projectId == selectedProject &&
+                                                            x.status == TMS.Data.ReportStatus.Open);
+            chkWithRep.IsChecked = true;
+            chkOpen.IsChecked = true;
+            dtpickTo.IsEnabled = false;
+            dtpickFrom.IsEnabled = false;
+        }
 
+        public void DeleteProject(ProjectView _proj)
+        {
+            //int selectedProject = GetClickedProjectId();
+            ConfirmWindow confirmWindow = new ConfirmWindow();
+            if (confirmWindow.ShowDialog() == true)
+            {
+                try
+                {
+                    if (_proj.Id != 0)
+                    {
+                        services.Delete<ProjectView>(_proj.Id);
+                        MessageBox.Show("The project has been successfully deleted!");
+                        dgProjects.ItemsSource = LoadProjectsGrid();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            else
+            {
+            }
         }
         //**********************************************PROJECTS_SECTION_END*******************************************************
         #endregion
@@ -122,25 +153,21 @@ namespace TMS.Client.Project_Manager.Views
             {
                 try
                 {
-                    TaskView task = services.Get<TaskView>(_task.Id);
-                    ReportView _report = services.Get<ReportView>(_task.report_id);
                     if (_task.Id != 0)
                     {
                         if (chkWithRep.IsChecked == true)
                         {
-                            ApproveView appr = services.Get<ApproveView>(_report.Id);
-                            services.Delete<ApproveView>(appr.Id);
-                            services.Delete<ReportView>(_report.Id);
-                            services.Delete<TaskView>(task.Id);
+                            services.Delete<TaskView>(_task.Id);
                             MessageBox.Show("The task has been successfully deleted!");
                             dgTasks.ItemsSource = GetTasksWithReports().Where(x => x.projectId == selectedProject);
                             chkWithRep.IsChecked = true;
                         }
-                        else
+                        if (chkWithRep.IsChecked == false)
                         {
                             services.Delete<TaskView>(_task.Id);
                             MessageBox.Show("The task has been successfully deleted!");
                             dgTasks.ItemsSource = GetAllTasks().Where(x => x.projectId == selectedProject);
+                            chkWithRep.IsChecked = false;
                         }
                     }
                     else
@@ -156,6 +183,23 @@ namespace TMS.Client.Project_Manager.Views
             else
             {
             }
+        }
+        public TaskView AddTask()
+        {
+            ProjectView newProject = GetClickedProject();
+            newTask = new TaskView();
+            try
+            {
+                newTask.description = txtTask.Text;
+                newTask.effort = (double)upDown_task.Value;
+                newTask.projectId = newProject.Id;
+                newTask = services.AddNEW<TaskView>(newTask);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            return newTask;
         }
         //**********************************************TASKS_SECTION_END*******************************************************
         #endregion
@@ -183,7 +227,7 @@ namespace TMS.Client.Project_Manager.Views
             }
             else
             {
-                MessageBox.Show("No");
+                //MessageBox.Show("No");
             }
         }
 
@@ -207,7 +251,19 @@ namespace TMS.Client.Project_Manager.Views
                     apprView.reportId = _report.Id;
                     services.Update<ApproveView>(apprView);
 
-                    dgTasks.ItemsSource = GetTasksWithReports().Where(x => x.projectId == selectedProject);
+                    if (chkOpen.IsChecked == true)
+                    {
+                        dgTasks.ItemsSource = GetTasksWithReports().Where(x => x.projectId == selectedProject && x.status == TMS.Data.ReportStatus.Open);
+                    }
+                    if (chkAproved.IsChecked == true)
+                    {
+                        dgTasks.ItemsSource = GetTasksWithReports().Where(x => x.projectId == selectedProject && x.status == TMS.Data.ReportStatus.Approved);
+                    }
+                    if (chkDecline.IsChecked == true)
+                    {
+                        dgTasks.ItemsSource = GetTasksWithReports().Where(x => x.projectId == selectedProject && x.status == TMS.Data.ReportStatus.Declined);
+                    }
+
                     MessageBox.Show("The report has been successfully approved!");
                 }
                 catch (Exception ex)
@@ -246,7 +302,18 @@ namespace TMS.Client.Project_Manager.Views
                         apprView.reportId = _report.Id;
                         services.Update<ApproveView>(apprView);
 
-                        dgTasks.ItemsSource = GetTasksWithReports().Where(x => x.projectId == selectedProject);
+                        if (chkOpen.IsChecked == true)
+                        {
+                            dgTasks.ItemsSource = GetTasksWithReports().Where(x => x.projectId == selectedProject && x.status == TMS.Data.ReportStatus.Open);
+                        }
+                        if (chkAproved.IsChecked == true)
+                        {
+                            dgTasks.ItemsSource = GetTasksWithReports().Where(x => x.projectId == selectedProject && x.status == TMS.Data.ReportStatus.Approved);
+                        }
+                        if (chkDecline.IsChecked == true)
+                        {
+                            dgTasks.ItemsSource = GetTasksWithReports().Where(x => x.projectId == selectedProject && x.status == TMS.Data.ReportStatus.Declined);
+                        }
                         MessageBox.Show($"The Report has been declined! {engineer.FullName} will be informed by email.");
                     }
                     else
@@ -317,9 +384,45 @@ namespace TMS.Client.Project_Manager.Views
 
         private void BtnSearch_Click(object sender, RoutedEventArgs e)
         {
-            var result = LoadProjectsGrid().Where(x => x.name.ToLower().Contains(txtSearch.Text.ToLower()) ||
-                                                  x.abbreviation.ToLower().Contains(txtSearch.Text.ToLower()));
-            dgProjects.ItemsSource = result;
+            if (dgProjects.Visibility == Visibility.Visible)
+            {
+                var result = LoadProjectsGrid().Where(x => x.name.ToLower().Contains(txtSearch.Text.ToLower()));
+                dgProjects.ItemsSource = result;
+            }
+
+            if (dgTasks.Visibility == Visibility.Visible)
+            {
+                int selectedProject = GetClickedProjectId();
+                if (chkWithRep.IsChecked == false)
+                {
+                    var result_rep = GetAllTasks().Where(x => x.projectId == selectedProject && x.description.ToLower().Contains(txtSearch.Text.ToLower()));
+                    dgTasks.ItemsSource = result_rep;
+                }
+                if (chkWithRep.IsChecked == true)
+                {
+                    if (chkOpen.IsChecked == true)
+                    {
+                        var result_without_rep = GetTasksWithReports().Where(x => x.description.ToLower().Contains(txtSearch.Text.ToLower())
+                                                                            && x.status == TMS.Data.ReportStatus.Open
+                                                                            && x.projectId == selectedProject);
+                        dgTasks.ItemsSource = result_without_rep;
+                    }
+                    if (chkAproved.IsChecked == true)
+                    {
+                        var result_without_rep = GetTasksWithReports().Where(x => x.description.ToLower().Contains(txtSearch.Text.ToLower())
+                                                                            && x.status == TMS.Data.ReportStatus.Approved
+                                                                            && x.projectId == selectedProject);
+                        dgTasks.ItemsSource = result_without_rep;
+                    }
+                    if (chkDecline.IsChecked == true)
+                    {
+                        var result_without_rep = GetTasksWithReports().Where(x => x.description.ToLower().Contains(txtSearch.Text.ToLower())
+                                                                            && x.status == TMS.Data.ReportStatus.Declined
+                                                                            && x.projectId == selectedProject);
+                        dgTasks.ItemsSource = result_without_rep;
+                    }
+                }
+            }
         }
 
         private void CancelDateFrom_Click(object sender, RoutedEventArgs e)
@@ -350,11 +453,6 @@ namespace TMS.Client.Project_Manager.Views
                 var result = LoadProjectsGrid().Where(x => x.start >= dtpickFrom.SelectedDate && x.end <= dtpickTo.SelectedDate);
                 dgProjects.ItemsSource = result;
             }
-            if (dgTasks.Visibility == Visibility.Visible)
-            {
-                //var result = GetTasksWithReports().Where(x => x.start >= dtpickFrom.SelectedDate && x.end <= dtpickTo.SelectedDate);
-                //dgReports.ItemsSource = result;
-            }
         }
 
         private void BtnBack_Click(object sender, RoutedEventArgs e)
@@ -363,6 +461,10 @@ namespace TMS.Client.Project_Manager.Views
             dgTasks.Visibility = Visibility.Collapsed;
             btnBack.Visibility = Visibility.Hidden;
             filterPanel.Visibility = Visibility.Collapsed;
+            panelAddTask.Visibility = Visibility.Collapsed;
+            btnAddTask.Visibility = Visibility.Collapsed;
+            dtpickTo.IsEnabled = true;
+            dtpickFrom.IsEnabled = true;
         }
 
         // Reports Events
@@ -405,10 +507,11 @@ namespace TMS.Client.Project_Manager.Views
             chkOpen.Visibility = Visibility.Visible;
             chkAproved.Visibility = Visibility.Visible;
             chkDecline.Visibility = Visibility.Visible;
-            //colStatus.Visibility = Visibility.Visible;
-
+            panelAddTask.Visibility = Visibility.Collapsed;
+            btnAddTask.Visibility = Visibility.Collapsed;
             int selectedProject = GetClickedProjectId();
             dgTasks.ItemsSource = GetTasksWithReports().Where(x => x.projectId == selectedProject);
+            chkOpen.IsChecked = true;
         }
 
         private void ChkWithRep_Unchecked(object sender, RoutedEventArgs e)
@@ -416,10 +519,11 @@ namespace TMS.Client.Project_Manager.Views
             chkOpen.Visibility = Visibility.Hidden;
             chkAproved.Visibility = Visibility.Hidden;
             chkDecline.Visibility = Visibility.Hidden;
-            //colStatus.Visibility = Visibility.Collapsed;
-
+            chkOpen.IsChecked = false;
             int selectedProject = GetClickedProjectId();
             dgTasks.ItemsSource = GetAllTasks().Where(x => x.projectId == selectedProject);
+            panelAddTask.Visibility = Visibility.Visible;
+            btnAddTask.Visibility = Visibility.Visible;
         }
 
         private void ChkOpen_Checked(object sender, RoutedEventArgs e)
@@ -428,30 +532,34 @@ namespace TMS.Client.Project_Manager.Views
             dgTasks.ItemsSource = GetTasksWithReports().Where(x => x.status == TMS.Data.ReportStatus.Open && x.projectId == selectedProject);
         }
 
-        private void ChkOpen_Unchecked(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void ChkAproved_Checked(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void ChkAproved_Unchecked(object sender, RoutedEventArgs e)
-        {
-
+            int selectedProject = GetClickedProjectId();
+            dgTasks.ItemsSource = GetTasksWithReports().Where(x => x.status == TMS.Data.ReportStatus.Approved && x.projectId == selectedProject);
         }
 
         private void ChkDecline_Checked(object sender, RoutedEventArgs e)
         {
-
+            int selectedProject = GetClickedProjectId();
+            dgTasks.ItemsSource = GetTasksWithReports().Where(x => x.status == TMS.Data.ReportStatus.Declined && x.projectId == selectedProject);
         }
 
-        private void ChkDecline_Unchecked(object sender, RoutedEventArgs e)
+        #endregion
+
+        private void BtnDeleteProj_Click(object sender, RoutedEventArgs e)
         {
-
+            ProjectView projectToDelete = GetClickedProject();
+            DeleteProject(projectToDelete);
         }
-        #endregion 
+
+        private void BtnAddTask_Click(object sender, RoutedEventArgs e)
+        {
+            var taskToAdd = AddTask();
+            txtTask.Text = "";
+            upDown_task.Value = 0.0;
+            int selectedProject = GetClickedProjectId();
+            dgTasks.ItemsSource = GetAllTasks().Where(x => x.projectId == selectedProject);
+        }
     }
 }
