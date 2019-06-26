@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using TMS.Client.Project_Manager;
+using TMS.Client.TeamLead;
 using TMS.Client.ViewModels;
 using TMS.Client.Windows;
 using TMS.Data;
@@ -34,11 +36,18 @@ namespace TMS.Client
             {
                 case Role.Engineer: _currentWindow = new EngineerWindow();
                     break;
-                case Role.ProjectManager: throw new NotImplementedException();
+                case Role.ProjectManager: _currentWindow = new PMView();
                     break;
-                case Role.TeamLead: throw new NotImplementedException();
+                case Role.TeamLead: _currentWindow = new TeamLeadView();
                     break;
             }
+            _currentWindow.DataContext = _context;
+            _currentWindow.Show();
+        }
+
+        public void LogOut()
+        {
+            _currentWindow = new AuthorizationWindow();
             _currentWindow.DataContext = _context;
             _currentWindow.Show();
         }

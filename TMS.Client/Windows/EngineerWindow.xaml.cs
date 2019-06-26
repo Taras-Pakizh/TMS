@@ -148,8 +148,20 @@ namespace TMS.Client.Windows
             Filter_Project.SelectedIndex = -1;
         }
 
+
         #endregion
 
-        
+        #region ProfileEvents
+
+        private void LogOut_Click(object sender, RoutedEventArgs e)
+        {
+            this.Hide();
+
+            ((App)Application.Current).LogOut();
+
+            this.Close();
+        }
+
+        #endregion
     }
 }

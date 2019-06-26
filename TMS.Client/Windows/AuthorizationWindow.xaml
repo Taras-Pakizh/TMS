@@ -5,11 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TMS.Client.Windows"
         mc:Ignorable="d"
-        Title="AuthorizationWindow" Height="450" Width="800">
+        Title="Time Management System" Height="298.8" Width="800">
+
+    <Window.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TMS.Client;component/Windows/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+    </Window.Resources>
+    
     <StackPanel>
-        <Label Content="Authorization"/>
+        <Label Content="Authorization" HorizontalAlignment="Center" FontSize="20"/>
         
-        <Label Name="Error_list"/>
+        <Label Name="Error_list" Foreground="Yellow"/>
         
         <TextBox Name="Login" Text="Pakizh_engineer"/>
 
@@ -17,4 +28,5 @@
 
         <Button Content="Login" Click="Login_Click"/>
     </StackPanel>
+    
 </Window>

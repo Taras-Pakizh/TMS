@@ -20,6 +20,67 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
+        <Style TargetType="Label">
+
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontFamily" Value="Myanmar Text"/>
+            <Setter Property="Foreground" Value="White"/>
+
+        </Style>
+
+        <Style TargetType="StackPanel">
+
+            <Setter Property="Background" Value="#454548"/>
+
+        </Style>
+
+        <Style TargetType="Button">
+
+            <Setter Property="Margin" Value="5, 5, 5, 5"/>
+            <Setter Property="Background" Value="#373738"/>
+            <Setter Property="Padding" Value="5, 5, 5, 5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Myanmar Text"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Style.Triggers>
+
+                <Trigger Property="IsMouseOver" Value="True">
+
+
+                    <Setter Property="Padding" Value="5, 5, 5, 5"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontFamily" Value="Myanmar Text"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Margin" Value="5, 5, 5, 5"/>
+
+                    <Setter Property="Background" Value="#272727"/>
+                    <Setter Property="Template" Value="{DynamicResource MyButtonTemplate}"/>
+
+                </Trigger>
+
+            </Style.Triggers>
+
+        </Style>
+
+        <Style TargetType="RichTextBox">
+
+            <Setter Property="Padding" Value="3"/>
+            <Setter Property="Margin" Value="5, 5, 5, 5"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Myanmar Text"/>
+            <Setter Property="Background" Value="#373738"/>
+            <Setter Property="BorderThickness" Value="0"/>
+
+        </Style>
+
+        
+
     </Window.Resources>
 
     <StackPanel>

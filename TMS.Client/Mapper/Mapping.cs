@@ -86,6 +86,12 @@ namespace TMS.Client
                         }));
                 ctg.CreateMap<ViewReport, ReportView>();
                 ctg.CreateMap<ReportValidationModel, ViewReport>();
+
+                ctg.CreateMap<UserView, ViewUser>()
+                    .ForMember(x => x.ReportsCount,
+                            y => y.MapFrom(i => Set<ReportView>().Count(c => c.engineerId == i.Id)))
+                    .ForMember(x => x.TeamName,
+                            y => y.MapFrom(i => Set<TeamView>().Where(w => w.Id == i.team_id).Single().name));
             });
 
             isInitialize = true;

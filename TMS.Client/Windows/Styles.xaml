@@ -1,0 +1,184 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:TMS.Client.Windows">
+
+    <Style TargetType="TextBox">
+
+        <Setter Property="Background" Value="#373738"/>
+        <Setter Property="Margin" Value="5, 5, 5, 5"/>
+        <Setter Property="Padding" Value="5, 5, 5, 5"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontFamily" Value="Myanmar Text"/>
+
+    </Style>
+
+    <Style TargetType="PasswordBox">
+
+        <Setter Property="Background" Value="#373738"/>
+        <Setter Property="Margin" Value="5, 5, 5, 5"/>
+        <Setter Property="Padding" Value="5, 5, 5, 5"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontFamily" Value="Myanmar Text"/>
+
+    </Style>
+
+    <Style TargetType="StackPanel">
+
+        <Setter Property="Background" Value="#454548"/>
+
+    </Style>
+
+    <Style TargetType="Button">
+
+        <Setter Property="Margin" Value="5, 5, 5, 5"/>
+        <Setter Property="Background" Value="#373738"/>
+        <Setter Property="Padding" Value="5, 5, 5, 5"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontFamily" Value="Myanmar Text"/>
+        <Setter Property="Cursor" Value="Hand"/>
+
+        <Style.Triggers>
+
+            <Trigger Property="IsMouseOver" Value="True">
+
+
+                <Setter Property="Padding" Value="5, 5, 5, 5"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="FontFamily" Value="Myanmar Text"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Margin" Value="5, 5, 5, 5"/>
+
+                <Setter Property="Background" Value="#272727"/>
+                <Setter Property="Template" Value="{DynamicResource MyButtonTemplate}"/>
+
+            </Trigger>
+
+        </Style.Triggers>
+
+    </Style>
+
+    <Style TargetType="Label">
+
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontFamily" Value="Myanmar Text"/>
+        <Setter Property="Foreground" Value="White"/>
+
+    </Style>
+
+    <Style TargetType="TabControl">
+
+        <Setter Property="Background" Value="#454548"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="BorderThickness" Value="0"/>
+
+    </Style>
+
+    <Style TargetType="TextBlock">
+
+        <Setter Property="Padding" Value="3"/>
+        <Setter Property="Margin" Value="5, 5, 5, 5"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontFamily" Value="Myanmar Text"/>
+
+    </Style>
+
+    <Style TargetType="TabItem">
+
+        <Setter Property="Background" Value="#454548"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontFamily" Value="Myanmar Text"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Grid Name="Panel">
+                        <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="5,5"
+                                        />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Panel" Property="Background" Value="#373738"/>
+
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter TargetName="Panel" Property="Background" Value="#454548" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+    </Style>
+
+    <Style TargetType="DataGrid">
+
+        <Setter Property="FontFamily" Value="Myanmar Text"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="#454548"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="RowBackground" Value="#454548"/>
+        <Setter Property="HeadersVisibility" Value="Column"/>
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Visible"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Visible"/>
+        <Setter Property="Height" Value="400"/>
+
+    </Style>
+
+    <Style TargetType="DataGridColumnHeader">
+
+        <Setter Property="Background" Value="#454548"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontFamily" Value="Myanmar Text"/>
+
+    </Style>
+
+
+
+    <ControlTemplate x:Key="MyButtonTemplate" TargetType="{x:Type Button}">
+        <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+            <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsDefaulted" Value="True">
+                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" TargetName="border" Value="#FFC4E5F6"/>
+                <Setter Property="BorderBrush" TargetName="border" Value="#FF2C628B"/>
+            </Trigger>
+            <Trigger Property="ToggleButton.IsChecked" Value="True">
+                <Setter Property="Background" TargetName="border" Value="#FFBCDDEE"/>
+                <Setter Property="BorderBrush" TargetName="border" Value="#FF245A83"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
+                <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
+                <Setter Property="Foreground" Value="#FF838383"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+
+</ResourceDictionary>

@@ -12,7 +12,7 @@ namespace TMS.Services
     {
         #region Proxy
 
-        private WebApiServices _client;
+        public WebApiServices Client { get; private set; }
 
         private Dictionary<Type, IEnumerable<IViewBase>> _LoadedData = new Dictionary<Type, IEnumerable<IViewBase>>();
 
@@ -26,12 +26,12 @@ namespace TMS.Services
 
         public ProxyWebApi()
         {
-            _client = new WebApiServices();
+            Client = new WebApiServices();
         }
 
         public ProxyWebApi(string app_path)
         {
-            _client = new WebApiServices(app_path);
+            Client = new WebApiServices(app_path);
         }
 
         private void _AddSet<T>(IEnumerable<T> list) where T : IViewBase
@@ -51,7 +51,7 @@ namespace TMS.Services
             return (IEnumerable<T>)_LoadedData[typeof(T)];
         }
 
-        private bool _IsActual(Type type)
+        public bool IsActual(Type type)
         {
             if (_isActual_list.Keys.Contains(type))
             {
@@ -74,96 +74,96 @@ namespace TMS.Services
 
         public bool IsAuthorizated
         {
-            get { return _client.IsAuthorizated; }
+            get { return Client.IsAuthorizated; }
         }
 
         public bool Add<Tview>(Tview model) where Tview : IViewBase
         {
             _UpdateSet(typeof(Tview), false);
-            return _client.Add(model);
+            return Client.Add(model);
         }
 
         public async Task<bool> AddAsync<Tview>(Tview model) where Tview : IViewBase
         {
             _UpdateSet(typeof(Tview), false);
-            return await _client.AddAsync(model);
+            return await Client.AddAsync(model);
         }
 
         public bool Authorization(string username, string password)
         {
             _isUserActual = false;
-            return _client.Authorization(username, password);
+            return Client.Authorization(username, password);
         }
 
         public bool Delete<Tview>(int id) where Tview : IViewBase
         {
             _UpdateSet(typeof(Tview), false);
-            return _client.Delete<Tview>(id);
+            return Client.Delete<Tview>(id);
         }
 
         public async Task<bool> DeleteAsync<Tview>(int id) where Tview : IViewBase
         {
             _UpdateSet(typeof(Tview), false);
-            return await _client.DeleteAsync<Tview>(id);
+            return await Client.DeleteAsync<Tview>(id);
         }
 
         public Tview Get<Tview>(int id) where Tview : IViewBase
         {
-            return _client.Get<Tview>(id);
+            return Client.Get<Tview>(id);
         }
 
         public IEnumerable<Tview> GetAll<Tview>() where Tview : IViewBase
         {
-            if (_IsActual(typeof(Tview)))
+            if (IsActual(typeof(Tview)))
             {
                 return _GetLoadedData<Tview>();
             }
-            var result = _client.GetAll<Tview>();
+            var result = Client.GetAll<Tview>();
             _AddSet(result);
             return result;
         }
 
         public async Task<IEnumerable<Tview>> GetAllAsync<Tview>() where Tview : IViewBase
         {
-            if (_IsActual(typeof(Tview)))
+            if (IsActual(typeof(Tview)))
             {
                 return _GetLoadedData<Tview>();
             }
-            var result = await _client.GetAllAsync<Tview>();
+            var result = await Client.GetAllAsync<Tview>();
             _AddSet(result);
             return result;
         }
 
         public async Task<Tview> GetAsync<Tview>(int id) where Tview : IViewBase
         {
-            return await _client.GetAsync<Tview>(id);
+            return await Client.GetAsync<Tview>(id);
         }
 
         public Role GetRole()
         {
-            return _client.GetRole();
+            return Client.GetRole();
         }
 
         public async Task<Role> GetRoleAsync()
         {
-            return await _client.GetRoleAsync();
+            return await Client.GetRoleAsync();
         }
 
         public string Register(string email, string password, string login, string roleName, string firstname, string lastname, int teamId)
         {
-            return _client.Register(email, password, login, roleName, firstname, lastname, teamId);
+            return Client.Register(email, password, login, roleName, firstname, lastname, teamId);
         }
 
         public bool Update<Tview>(Tview model) where Tview : IViewBase
         {
             _UpdateSet(typeof(Tview), false);
-            return _client.Update(model);
+            return Client.Update(model);
         }
 
         public async Task<bool> UpdateAsync<Tview>(Tview model) where Tview : IViewBase
         {
             _UpdateSet(typeof(Tview), false);
-            return await _client.UpdateAsync(model);
+            return await Client.UpdateAsync(model);
         }
 
         public async Task<UserView> GetCurrentUser(string login)
@@ -172,7 +172,7 @@ namespace TMS.Services
             {
                 return _currentUser;
             }
-            _currentUser = await _client.GetCurrentUser(login);
+            _currentUser = await Client.GetCurrentUser(login);
             _isUserActual = true;
             return _currentUser;
         }

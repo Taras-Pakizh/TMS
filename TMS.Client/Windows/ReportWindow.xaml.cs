@@ -176,7 +176,7 @@ namespace TMS.Client.Windows
                 time = time.Add(FullDay);
             }
 
-            return firstDay.TotalHours + lastDay.TotalHours + time.TotalHours;
+            return (int)(firstDay.TotalHours + lastDay.TotalHours + time.TotalHours);
         }
 
         private async void Submit_Click(object sender, RoutedEventArgs e)
@@ -192,11 +192,26 @@ namespace TMS.Client.Windows
             switch (_operation)
             {
                 case ReportOperation.Add:
-                    result = await Context.Add(report); break;
+                    result = await Context.Add(report);
+
+                    //Govno----------
+                    var res = await Context.Add(new ApproveView()
+                    {
+                        isApproved = false,
+                        reportId = Context.Proxy.Client.GetAll<ReportView>().Max(x => x.Id)
+                    });
+                    //---------
+                        break;
                 case ReportOperation.Update:
                     result = await Context.Update(report); break;
                 case ReportOperation.Delete:
-                    result = await Context.Delete<ReportView>(report.Id); break;
+                    result = await Context.Delete<ReportView>(report.Id);
+                        break;
+            }
+
+            if (!Context.Proxy.IsActual(typeof(ReportView)))
+            {
+                Context.IsReportActual = false;
             }
 
             this.Hide();

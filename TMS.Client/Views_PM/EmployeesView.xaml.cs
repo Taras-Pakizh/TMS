@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TMS.Client.Project_Manager.ViewModels;
 using TMS.Services;
 using TMS.ViewModels;
 
@@ -24,19 +25,35 @@ namespace TMS.Client.Project_Manager.Views
     public partial class EmployeesView : UserControl
     {
         static private WebApiServices services = new WebApiServices();
+
         public BindableCollection<UserView> Users { get; set; }
+
         EmployeePanelView panelView = new EmployeePanelView();
+
         public EmployeesView()
         {
             InitializeComponent();
-            services.Authorization("Pakizh_engineer", "Taras20.");
-            var result = services.GetAll<UserView>();
+        }
+
+        public EmployeesViewModel Context
+        {
+            get { return (EmployeesViewModel)DataContext; }
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            services = Context.Client;
+            var result = services.GetAll<UserView>().Where(x => x.team_id == Context.User.team_id);
             Users = new BindableCollection<UserView>(result);
-            var team_info = services.Get<TeamView>(2);
+
+            //Govno
+            var team_info = services.Get<TeamView>(Context.User.team_id);
             txtTeamName.Text = team_info.name;
+
             panelView.Back.Click += BackButton;
             panelEmployees.ItemsSource = Users.ToList();
         }
+
         public List<UserView> GetUsers()
         {
             var users = (from dev in services.GetAll<UserView>()
@@ -62,10 +79,12 @@ namespace TMS.Client.Project_Manager.Views
             Panel.Children.Add(panelView);
 
         }
+
         private void BackButton(object sender, RoutedEventArgs e)
         {
             panelEmployees.Visibility = Visibility.Visible;
             Panel.Children.Remove(panelView);
         }
+        
     }
 }

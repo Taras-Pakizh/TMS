@@ -31,8 +31,8 @@ namespace TMS.Client.Windows
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Label_Project.Content = "Project: " + Context.projectName;
-            Label_Effort.Content = "Hours: " + Context.effort.ToString();
+            Label_Project.Content = Context.projectName;
+            Label_Effort.Content = Context.effort.ToString();
             TextBlock_Description.Text = Context.description;
         }
     }

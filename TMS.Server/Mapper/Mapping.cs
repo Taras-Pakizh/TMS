@@ -49,7 +49,21 @@ namespace TMS.Server
                                 y => y.MapFrom(z => z.engineers.Select(l => l.Id)))
                     .ForMember(x => x.teamleadId,
                                 y => y.MapFrom(z => z.teamlead.Id));
-                ctg.CreateMap<User, UserView>();
+                ctg.CreateMap<User, UserView>().ForMember(x => x.team_id,
+                                y => y.MapFrom((z, h) => 
+                                {
+                                    foreach(var team in cx.Teams.ToList())
+                                    {
+                                        foreach(var user in team.engineers.ToList())
+                                        {
+                                            if(user.Id == z.Id)
+                                            {
+                                                return team.Id;
+                                            }
+                                        }
+                                    }
+                                    return 0;
+                                } ));
 
 
 

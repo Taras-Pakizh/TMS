@@ -5,22 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TMS.Client.Windows"
         mc:Ignorable="d"
-        Title="TaskWindow" Height="450" Width="800" Loaded="Window_Loaded">
-    <Grid>
+        Title="Task" Height="450" Width="800" Loaded="Window_Loaded">
+
+    <Window.Resources>
+
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/TMS.Client;component/Windows/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
         
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+    </Window.Resources>
 
-        <Label Name="Label_Project" Grid.Column="0" Grid.Row="0"/>
-        <Label Name="Label_Effort" Grid.Column="1" Grid.Row="0"/>
+    <StackPanel>
 
-        <TextBlock Name="TextBlock_Description" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1"/>
+        <Label Content="Task" HorizontalAlignment="Center" Margin="0, 20" FontSize="20"/>
 
-    </Grid>
+        <StackPanel Orientation="Horizontal">
+
+            <Label Content="Project: " Foreground="Yellow"/>
+            
+            <Label Name="Label_Project"/>
+
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal">
+
+            <Label Content="Hours: " Foreground="Yellow"/>
+            
+            <Label Name="Label_Effort" />
+
+        </StackPanel>
+        
+        <Label Content="Description: " Foreground="Yellow"/>
+        
+        <TextBlock Name="TextBlock_Description" />
+
+    </StackPanel>
+    
 </Window>

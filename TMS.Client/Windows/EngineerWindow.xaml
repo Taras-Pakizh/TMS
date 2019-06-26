@@ -7,10 +7,12 @@
         xmlns:extended="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:data="clr-namespace:TMS.Data;assembly=TMS"
+        xmlns:converter="clr-namespace:TMS.Client.Convertors"
         mc:Ignorable="d"
-        Title="EngineerWindow" Height="450" Width="800" Loaded="Window_Loaded">
+        Title="Time Management System" Name="MyWindow" Height="470" Width="800" Loaded="Window_Loaded">
+    
     <Window.Resources>
-        
+
         <ObjectDataProvider x:Key="Enum_Status"
             MethodName="GetValues" ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -25,222 +27,445 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
+        <converter:ActualReportConverter x:Key="ReportConverter"/>
+        <converter:VisibilityConvertor x:Key="VisibilityConverter"/>
+
+        <Style TargetType="ComboBox">
+
+            <Setter Property="FontSize" Value="10"/>
+
+        </Style>
+
+        <Style TargetType="extended:DateTimePicker">
+
+            <Setter Property="FontSize" Value="10"/>
+
+        </Style>
+        
+        <Style TargetType="StackPanel">
+
+            <Setter Property="Background" Value="#454548"/>
+            
+
+        </Style>
+
+        <Style TargetType="Button">
+
+            <Setter Property="Margin" Value="5, 5, 5, 5"/>
+            <Setter Property="Background" Value="#373738"/>
+            <Setter Property="Padding" Value="5, 5, 5, 5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontFamily" Value="Myanmar Text"/>
+            <Setter Property="Cursor" Value="Hand"/>
+
+            <Style.Triggers>
+
+                <Trigger Property="IsMouseOver" Value="True">
+
+                    
+                    <Setter Property="Padding" Value="5, 5, 5, 5"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="FontSize" Value="15"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="FontFamily" Value="Myanmar Text"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Margin" Value="5, 5, 5, 5"/>
+
+                    <Setter Property="Background" Value="#272727"/>
+                    <Setter Property="Template" Value="{DynamicResource MyButtonTemplate}"/>
+
+                </Trigger>
+                
+            </Style.Triggers>
+
+        </Style>
+
+        <Style TargetType="Label">
+
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontFamily" Value="Myanmar Text"/>
+            <Setter Property="Foreground" Value="White"/>
+
+        </Style>
+
+        <Style TargetType="TabControl">
+
+            <Setter Property="Background" Value="#454548"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            
+        </Style>
+
+        <Style TargetType="TextBlock">
+
+            <Setter Property="Padding" Value="3"/>
+
+        </Style>
+
+        <Style TargetType="TabItem">
+
+            <Setter Property="Background" Value="#454548"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontFamily" Value="Myanmar Text"/>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Grid Name="Panel">
+                            <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="5,5"
+                                        />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Panel" Property="Background" Value="#373738"/>
+                                
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="False">
+                                <Setter TargetName="Panel" Property="Background" Value="#454548" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+        <Style TargetType="DataGrid">
+
+            <Setter Property="FontFamily" Value="Myanmar Text"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#454548"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RowBackground" Value="#454548"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Visible"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Visible"/>
+            <Setter Property="Height" Value="400"/>
+
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+
+            <Setter Property="Background" Value="#454548"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontFamily" Value="Myanmar Text"/>
+            
+        </Style>
+
+        
+
+        <ControlTemplate x:Key="MyButtonTemplate" TargetType="{x:Type Button}">
+            <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                <ContentPresenter x:Name="contentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsDefaulted" Value="True">
+                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FFC4E5F6"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF2C628B"/>
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FFBCDDEE"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF245A83"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
+                    <Setter Property="Foreground" Value="#FF838383"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        
     </Window.Resources>
-    
-    <TabControl Name="TabControl_Global">
 
-        <TabItem IsSelected="True">
-            <TabItem.Header>
-                <StackPanel>
-                    <TextBlock Text="My reports"/>
+    <StackPanel>
+
+        <StackPanel Visibility="{Binding Path=ProfileVisibility, Converter={StaticResource VisibilityConverter}}">
+
+            <StackPanel HorizontalAlignment="Stretch" DataContext="{Binding Path=InfoUser}" 
+                    >
+
+                <Button Content="Log out" HorizontalAlignment="Right" Click="LogOut_Click"/>
+
+                <StackPanel HorizontalAlignment="Center">
+
+                    <Image Source="../Images/profile.png" Width="50" Height="50" Margin="5, 30, 5, 5"/>
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <Label Content="Login: "/>
+
+                        <Label Content="{Binding Path=login}"/>
+
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <Label Content="Full name: "/>
+
+                        <Label Content="{Binding Path=FullName}"/>
+
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <Label Content="Email: "/>
+
+                        <Label Content="{Binding Path=email}"/>
+
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <Label Content="Position: "/>
+
+                        <Label Content="{Binding Path=role}"/>
+
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <Label Content="Team: "/>
+
+                        <Label Content="{Binding Path=TeamName}"/>
+
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+
+                        <Label Content="Reports done: "/>
+
+                        <Label Content="{Binding Path=ReportsCount}"/>
+
+                    </StackPanel>
+
                 </StackPanel>
-            </TabItem.Header>
-            <TabItem.Content>
-                <StackPanel>
 
-                    <Grid>
+            </StackPanel>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+            <Button Content="Start work" Command="{Binding Path=Start_Back}" HorizontalAlignment="Center"/>
 
-                        <StackPanel Orientation="Horizontal" Name="FilterReports_Panel" Grid.Column="0">
+        </StackPanel>
+        
+        <TabControl Name="TabControl_Global" 
+                    Visibility="{Binding Path=MainPanelVisibility, 
+                    Converter={StaticResource VisibilityConverter}}">
 
-                            <Label Content="Task:"/>
+            <TabItem IsSelected="True">
+                <TabItem.Header>
+                    <StackPanel>
+                        <TextBlock Text="My reports"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <StackPanel CanHorizontallyScroll="True">
+
+                        <DockPanel Name="FilterReports_Panel" LastChildFill="False">
+
+                            <Button Command="{Binding Path=Start_Back}" DockPanel.Dock="Left" 
+                                    ToolTip="Back to profile">
+                                <Image Source="..\Images\left-arrow.png" Width="30" Height="30"/>
+                            </Button>
+
+                            <Label Content="Task:" DockPanel.Dock="Left"/>
                             <ComboBox Name="Filter_Tasks" ItemsSource="{Binding Path=ViewTasks, Mode=OneWay}" 
-                                  DisplayMemberPath="taskName" SelectedValuePath="Id">
+                                      DisplayMemberPath="taskName" SelectedValuePath="Id" DockPanel.Dock="Left">
                             </ComboBox>
 
-                            <Label Content="Status:"/>
-                            <ComboBox Name="Filter_Status" ItemsSource="{Binding Source={StaticResource Enum_Status}}">
+                            <Label Content="Status:" DockPanel.Dock="Left"/>
+                            <ComboBox DockPanel.Dock="Left" Name="Filter_Status" 
+                                      ItemsSource="{Binding Source={StaticResource Enum_Status}}">
                             </ComboBox>
 
-                            <Label Content="Activity:"/>
-                            <ComboBox Name="Filter_Activity" ItemsSource="{Binding Source={StaticResource Enum_Activity}}">
+                            <Label Content="Activity:" DockPanel.Dock="Left"/>
+                            <ComboBox Name="Filter_Activity"  DockPanel.Dock="Left"
+                                      ItemsSource="{Binding Source={StaticResource Enum_Activity}}">
                             </ComboBox>
 
-                            <Label Content="Begin date:"/>
-                            <extended:DateTimePicker Name="Filter_BeginTime" Language="en-US">
+                            <Label Content="Begin date:" DockPanel.Dock="Left"/>
+                            <extended:DateTimePicker Name="Filter_BeginTime" Language="en-US" DockPanel.Dock="Left">
 
                             </extended:DateTimePicker>
 
                             <Label Content="End date:"/>
-                            <extended:DateTimePicker Name="Filter_EndTime" Language="en-US">
+                            <extended:DateTimePicker Name="Filter_EndTime" Language="en-US" DockPanel.Dock="Left">
 
                             </extended:DateTimePicker>
 
-                            <Button Name="Button_ReportFilter" Content="Apply" Command="{Binding Path=FilterReports}" 
-                                    CommandParameter="{Binding ElementName=FilterReports_Panel, Path=Children}"/>
+                            <Button Name="Button_ReportFilter" Content="Apply" Command="{Binding Path=FilterReports}" DockPanel.Dock="Left" 
+                                        CommandParameter="{Binding ElementName=FilterReports_Panel, Path=Children}"/>
 
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Column="1">
-
-                            <Button Content="Reset" Command="{Binding Path=FilterReports}"
-                                CommandParameter="All" Click="ResetReportFilters_Click"/>
+                            <Label Name="Label_Changes" DockPanel.Dock="Right" Foreground="Yellow"
+                                   Content="{Binding Path=IsReportActual, Mode=OneWay, Converter={StaticResource ReportConverter}}"/>
 
                             <Button Content="Download" Command="{Binding Path=FilterReports}"
-                                CommandParameter="Download"/>
+                                    CommandParameter="Download" DockPanel.Dock="Right"/>
 
-                            <Button Content="Create Report" Click="Add_Click" />
+                            <Button Content="Reset" Command="{Binding Path=FilterReports}" DockPanel.Dock="Right"
+                                    CommandParameter="All" Click="ResetReportFilters_Click"/>
 
-                        </StackPanel>
+                            <Button Content="Create Report" Click="Add_Click" DockPanel.Dock="Right" />
 
-                    </Grid>
-                    
-                    <DataGrid ItemsSource="{Binding Path=ShowingReports, Mode=OneWay}"
-                              IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
-                        
-                        <DataGrid.Columns>
+                        </DockPanel>
+
+                        <DataGrid ItemsSource="{Binding Path=ShowingReports, Mode=OneWay}" 
+                                   AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
+
+                            <DataGrid.Columns>
+
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="Open task" Click="OpenTask_Click"/>
+                                                <Button Content="Update" Click="Update_Click"/>
+                                                <Button Content="Delete" Click="Delete_Click"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+
+                            </DataGrid.Columns>
+
+                        </DataGrid>
+
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
+
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel>
+                        <TextBlock Text="Projects"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <StackPanel>
+
+                        <DockPanel Name="FilterProjects_Panel" LastChildFill="False">
+
+                            <Button Command="{Binding Path=Start_Back}" DockPanel.Dock="Left" 
+                                    ToolTip="Back to profile">
+                                <Image Source="..\Images\left-arrow.png" Width="30" Height="30"/>
+                            </Button>
                             
-                            <DataGridTemplateColumn>
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button Content="Open task" Click="OpenTask_Click"/>
-                                            <Button Content="Update" Click="Update_Click"/>
-                                            <Button Content="Delete" Click="Delete_Click"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                            
-                        </DataGrid.Columns>
-                        
-                    </DataGrid>
-
-                </StackPanel>
-            </TabItem.Content>
-        </TabItem>
-
-        <TabItem>
-            <TabItem.Header>
-                <StackPanel>
-                    <TextBlock Text="Projects"/>
-                </StackPanel>
-            </TabItem.Header>
-            <TabItem.Content>
-                <StackPanel>
-
-                    <Grid>
-                        
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-
-                        <StackPanel Orientation="Horizontal" Name="FilterProjects_Panel" Grid.Column="0">
-
-                            <Label Content="Begin date:"/>
-                            <extended:DateTimePicker Name="Filter_ProjectBegin" Language="en-US">
+                            <Label Content="Begin date:" DockPanel.Dock="Left"/>
+                            <extended:DateTimePicker Name="Filter_ProjectBegin" Language="en-US" DockPanel.Dock="Left">
 
                             </extended:DateTimePicker>
 
-                            <Label Content="End date:"/>
-                            <extended:DateTimePicker Name="Filter_ProjectEnd" Language="en-US">
+                            <Label Content="End date:" DockPanel.Dock="Left"/>
+                            <extended:DateTimePicker Name="Filter_ProjectEnd" Language="en-US" DockPanel.Dock="Left">
 
                             </extended:DateTimePicker>
 
-                            <Button Content="Apply" Command="{Binding Path=FilterProjects}" CommandParameter="{Binding ElementName=FilterProjects_Panel, Path=Children}"/>
+                            <Button Content="Apply" Command="{Binding Path=FilterProjects}" DockPanel.Dock="Left"
+                                    CommandParameter="{Binding ElementName=FilterProjects_Panel, Path=Children}"/>
 
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Column="1">
-
-                            <Button Content="Reset" Command="{Binding Path=FilterProjects}"
-                                CommandParameter="All" Click="ResetProjectFilters_Click"/>
+                            <Button Content="Reset" Command="{Binding Path=FilterProjects}" DockPanel.Dock="Right"
+                                    CommandParameter="All" Click="ResetProjectFilters_Click"/>
 
                             <Button Content="Download" Command="{Binding Path=FilterProjects}"
-                                CommandParameter="Download"/>
+                                    CommandParameter="Download" DockPanel.Dock="Right"/>
 
-                        </StackPanel>
+                        </DockPanel>
 
-                    </Grid>
-                    
-                    <DataGrid ItemsSource="{Binding Path=ShowingProjects, Mode=OneWay}" IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
+                        <DataGrid ItemsSource="{Binding Path=ShowingProjects, Mode=OneWay}" IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
 
-                        <DataGrid.Columns>
+                            <DataGrid.Columns>
 
-                            <DataGridTemplateColumn>
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button Content="View tasks" Click="ViewTasks_Click"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="View tasks" Click="ViewTasks_Click"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
 
-                        </DataGrid.Columns>
+                            </DataGrid.Columns>
 
-                    </DataGrid>
+                        </DataGrid>
 
-                </StackPanel>
-            </TabItem.Content>
-        </TabItem>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
 
-        <TabItem>
-            <TabItem.Header>
-                <StackPanel>
-                    <TextBlock Text="Tasks"/>
-                </StackPanel>
-            </TabItem.Header>
-            <TabItem.Content>
-                <StackPanel>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel>
+                        <TextBlock Text="Tasks"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <TabItem.Content>
+                    <StackPanel>
 
-                    <Grid>
-                        
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
+                        <DockPanel LastChildFill="False">
 
-                        <StackPanel Orientation="Horizontal" Grid.Column="0">
-
-                            <Label Content="Project:"/>
+                            <Button Command="{Binding Path=Start_Back}" DockPanel.Dock="Left" 
+                                    ToolTip="Back to profile">
+                                <Image Source="..\Images\left-arrow.png" Width="30" Height="30"/>
+                            </Button>
+                            
+                            <Label Content="Project:" DockPanel.Dock="Left"/>
                             <ComboBox Name="Filter_Project" ItemsSource="{Binding Path=ViewProjects, Mode=OneWay}" 
-                                  DisplayMemberPath="name" SelectedValuePath="Id">
+                                      DisplayMemberPath="name" SelectedValuePath="Id" DockPanel.Dock="Left">
                             </ComboBox>
 
-                            <Button Content="Apply" Command="{Binding Path=FilterTask}" CommandParameter="{Binding ElementName=Filter_Project, Path=SelectedItem}"/>
+                            <Button Content="Apply" Command="{Binding Path=FilterTask}" DockPanel.Dock="Left"
+                                    CommandParameter="{Binding ElementName=Filter_Project, Path=SelectedItem}"/>
 
-                        </StackPanel>
+                            <Button Content="Reset" Command="{Binding Path=FilterTask}" DockPanel.Dock="Right"
+                                    Click="ResetTaskFilters_Click" CommandParameter="All"/>
 
-                        <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft" Grid.Column="1">
+                            <Button Content="Download" DockPanel.Dock="Right"
+                                    Command="{Binding Path=FilterTask}" CommandParameter="Download"/>
 
-                            <Button Content="Reset" Command="{Binding Path=FilterTask}"
-                                Click="ResetTaskFilters_Click" CommandParameter="All"/>
+                        </DockPanel>
 
-                            <Button Content="Download"
-                                Command="{Binding Path=FilterTask}" CommandParameter="Download"/>
+                        <DataGrid ItemsSource="{Binding Path=ShowingTasks, Mode=OneWay}" IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
 
-                        </StackPanel>
-                        
-                    </Grid>
-                    
-                    <DataGrid ItemsSource="{Binding Path=ShowingTasks, Mode=OneWay}" IsReadOnly="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
+                            <DataGrid.Columns>
 
-                        <DataGrid.Columns>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="Open task" Click="OpenTask_Click"/>
+                                                <Button Content="View reports" Click="ViewReports_Click"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
 
-                            <DataGridTemplateColumn>
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button Content="Open task" Click="OpenTask_Click"/>
-                                            <Button Content="View reports" Click="ViewReports_Click"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
+                            </DataGrid.Columns>
 
-                        </DataGrid.Columns>
+                        </DataGrid>
 
-                    </DataGrid>
+                    </StackPanel>
+                </TabItem.Content>
+            </TabItem>
 
-                </StackPanel>
-            </TabItem.Content>
-        </TabItem>
-
-    </TabControl>
+        </TabControl>
+        
+    </StackPanel>
+    
 </Window>

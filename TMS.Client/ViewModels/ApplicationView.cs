@@ -24,11 +24,46 @@ namespace TMS.Client.ViewModels
         public ApplicationView()
         {
             Mapping.Initialize();
+            ProfileVisibility = true;
+            MainPanelVisibility = false;
         }
 
         public ProxyWebApi Proxy { get { return _client; } }
 
         #region Properties
+
+        private bool _profileVisibility;
+        public bool ProfileVisibility
+        {
+            get { return _profileVisibility; }
+            set
+            {
+                _profileVisibility = value;
+                OnPropertyChanged(nameof(ProfileVisibility));
+            }
+        }
+
+        private bool _mainPanelVisibility;
+        public bool MainPanelVisibility
+        {
+            get { return _mainPanelVisibility; }
+            set
+            {
+                _mainPanelVisibility = value;
+                OnPropertyChanged(nameof(MainPanelVisibility));
+            }
+        }
+
+        private bool _IsReportActual = true;
+        public bool IsReportActual
+        {
+            get { return _IsReportActual; }
+            set
+            {
+                _IsReportActual = value;
+                OnPropertyChanged(nameof(IsReportActual));
+            }
+        }
 
         private bool _IsAuthorized;
         public bool IsAuthorized
@@ -60,6 +95,17 @@ namespace TMS.Client.ViewModels
             {
                 _currentUser = value;
                 OnPropertyChanged(nameof(CurrentUser));
+            }
+        }
+
+        private ViewUser _infoUser;
+        public ViewUser InfoUser
+        {
+            get { return _infoUser; }
+            set
+            {
+                _infoUser = value;
+                OnPropertyChanged(nameof(InfoUser));
             }
         }
 
@@ -212,7 +258,9 @@ namespace TMS.Client.ViewModels
         {
             await Task.Run(() =>
             {
-                Mapping.SetContext(Reports, Tasks, Projects);
+                Mapping.SetContext(Reports, Tasks, Projects, _client.GetAll<TeamView>());
+
+                InfoUser = Mapper.Map<UserView, ViewUser>(CurrentUser);
 
                 var viewReports = Mapper.Map<IEnumerable<ReportView>, IEnumerable<ViewReport>>(Reports
                     .Where(x => x.engineerId == CurrentUser.Id));
@@ -262,6 +310,36 @@ namespace TMS.Client.ViewModels
         #endregion
 
         #region Commands
+
+        #region Profile
+
+        private Command _visibilityChange;
+        public ICommand Start_Back
+        {
+            get
+            {
+                if (_visibilityChange != null)
+                    return _visibilityChange;
+                _visibilityChange = new Command(_Start_Back_Exec);
+                return _visibilityChange;
+            }
+        }
+        
+        private void _Start_Back_Exec(object obj)
+        {
+            if (ProfileVisibility)
+            {
+                MainPanelVisibility = true;
+                ProfileVisibility = false;
+            }
+            else
+            {
+                MainPanelVisibility = false;
+                ProfileVisibility = true;
+            }
+        }
+
+        #endregion
 
         #region Tasks_Filter
 
@@ -389,6 +467,7 @@ namespace TMS.Client.ViewModels
                 if(str == "Download")
                 {
                     await Download<ReportView>();
+                    IsReportActual = true;
                 }
                 return;
             }
